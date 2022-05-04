@@ -23,5 +23,21 @@ namespace SurvivorTemplate
 {
     class Special : BaseSkillState
     {
+        private float duration;
+        private float baseDuration = 0.35f;
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            duration = baseDuration / base.attackSpeedStat;
+        }
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+        }
+        public override void OnExit()
+        {
+            base.OnExit();
+        }
     }
 }
