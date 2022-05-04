@@ -24,17 +24,30 @@ namespace SurvivorTemplate
 {
     class Utils
     {
-        internal static void RegisterEffect(GameObject effect, float duration)
+        internal static void RegisterEffect(GameObject effect, float duration, string soundName = "")
         {
-            effect.AddComponent<DestroyOnTimer>().duration = duration;
-            effect.AddComponent<NetworkIdentity>();
-            effect.AddComponent<VFXAttributes>().vfxPriority = VFXAttributes.VFXPriority.Always;
-            var effectcomponent = effect.AddComponent<EffectComponent>();
+            var effectcomponent = effect.GetComponent<EffectComponent>();
+            if (!effectcomponent)
+            {
+                effectcomponent = effect.AddComponent<EffectComponent>();
+            }
+            if (!effect.GetComponent<DestroyOnTimer>())
+            {
+                effect.AddComponent<DestroyOnTimer>().duration = duration;
+            }
+            if (!effect.GetComponent<NetworkIdentity>())
+            {
+                effect.AddComponent<NetworkIdentity>();
+            }
+            if (!effect.GetComponent<VFXAttributes>())
+            {
+                effect.AddComponent<VFXAttributes>().vfxPriority = VFXAttributes.VFXPriority.Always;
+            }
             effectcomponent.applyScale = false;
             effectcomponent.effectIndex = EffectIndex.Invalid;
             effectcomponent.parentToReferencedTransform = true;
             effectcomponent.positionAtReferencedTransform = true;
-            effectcomponent.soundName = "";
+            effectcomponent.soundName = soundName;
             ContentAddition.AddEffect(effect);
         }
         public static Material InstantiateMaterial(Color color, Texture tex, Color emColor, float emPower, Texture emTex, float normStr, Texture normTex)

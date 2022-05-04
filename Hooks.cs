@@ -31,7 +31,7 @@ namespace SurvivorTemplate
         }
         internal static void LateSetup(HG.ReadOnlyArray<RoR2.ContentManagement.ReadOnlyContentPack> obj)
         {
-            ItemDisplays.SetIDRS();
+            //ItemDisplays.SetIDRS();
         }
         internal static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {

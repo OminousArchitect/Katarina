@@ -45,15 +45,15 @@ namespace SurvivorTemplate
             //On.RoR2.Networking.GameNetworkManager.OnClientConnect += (self, user, t) => { };
 
             Assets.PopulateAssets();
-            Achievements.RegisterUnlockables();
+            //Achievements.RegisterUnlockables();
             Prefabs.CreatePrefabs();
             CreatePrefab();
             RegisterStates();
             RegisterCharacter();
             CreateDoppelganger();
             Hook.Hooks();
-            ItemDisplays.RegisterDisplays();
-            ItemDisplays.PopulateDisplays();
+            //ItemDisplays.RegisterDisplays();
+            //ItemDisplays.PopulateDisplays();
         }
         private static GameObject CreateModel(GameObject main)
         {
