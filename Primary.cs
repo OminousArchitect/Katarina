@@ -34,6 +34,10 @@ namespace SurvivorTemplate
         public override void FixedUpdate()
         {
             base.FixedUpdate();
+            if (base.fixedAge >= this.duration && base.isAuthority)
+            {
+                this.outer.SetNextStateToMain();
+            }
         }
         public override void OnExit()
         {
