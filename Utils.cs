@@ -24,6 +24,20 @@ namespace SurvivorTemplate
 {
     class Utils
     {
+        public static GameObject CreateHitbox(string name, Transform parent, Vector3 scale)
+        {
+            var hitboxTransform1 = new GameObject(name);
+            hitboxTransform1.transform.SetParent(parent);
+            hitboxTransform1.transform.localPosition = Vector3.zero;
+            hitboxTransform1.transform.localRotation = Quaternion.identity;
+            hitboxTransform1.transform.localScale = scale;
+            var hitBoxGroup1 = parent.parent.gameObject.AddComponent<HitBoxGroup>();
+            HitBox hitBox = hitboxTransform1.AddComponent<HitBox>();
+            hitboxTransform1.layer = LayerIndex.projectile.intVal;
+            hitBoxGroup1.hitBoxes = new HitBox[] { hitBox };
+            hitBoxGroup1.groupName = name;
+            return hitboxTransform1;
+        }
         internal static void RegisterEffect(GameObject effect, float duration, string soundName = "")
         {
             var effectcomponent = effect.GetComponent<EffectComponent>();
