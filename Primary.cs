@@ -43,5 +43,9 @@ namespace SurvivorTemplate
         {
             base.OnExit();
         }
+        public override InterruptPriority GetMinimumInterruptPriority()
+        {
+            return InterruptPriority.PrioritySkill;
+        }
     }
 }
