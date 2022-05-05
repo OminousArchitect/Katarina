@@ -479,6 +479,12 @@ namespace SurvivorTemplate
             aimAnimator.yawGiveupRange = 10f;
             aimAnimator.giveupDuration = 8f;
 
+            FootstepHandler footstepHandler = createModel.AddComponent<FootstepHandler>();
+            footstepHandler.baseFootstepString = "Play_player_footstep";
+            footstepHandler.sprintFootstepOverrideString = "";
+            footstepHandler.enableFootstepDust = true;
+            footstepHandler.footstepDustPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/GenericFootstepDust");
+
             EntityStateMachine mainStateMachine = bodyComponent.GetComponent<EntityStateMachine>();
             mainStateMachine.mainStateType = new SerializableEntityStateType(typeof(CharacterMain));
 
