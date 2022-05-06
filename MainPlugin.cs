@@ -586,8 +586,8 @@ namespace SurvivorTemplate
         {
             SkillLocator component = characterPrefab.GetComponent<SkillLocator>();
 
-            LanguageAPI.Add(SURVIVORNAMEKEY + "_PASSIVE_NAME", "Galvanized Coating");
-            LanguageAPI.Add(SURVIVORNAMEKEY + "B_PASSIVE_DESCRIPTION", "Bomber resists <style=cIsUtility>fall damage</style>.");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "_PASSIVE_NAME", "");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "B_PASSIVE_DESCRIPTION", "");
 
             component.passiveSkill.enabled = false;
             component.passiveSkill.skillNameToken = SURVIVORNAMEKEY + "_PASSIVE_NAME";
@@ -597,8 +597,8 @@ namespace SurvivorTemplate
         void PrimarySetup()
         {
             SkillLocator component = characterPrefab.GetComponent<SkillLocator>();
-            LanguageAPI.Add(SURVIVORNAMEKEY + "_M1", "Sticky Bomb");
-            LanguageAPI.Add(SURVIVORNAMEKEY + "_M1_DESCRIPTION", "Throw Sticky Bombs that attach to any surface or enemy. Up to 6 Sticky Bombs can be active at all times.");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "_M1", "");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "_M1_DESCRIPTION", "");
 
             var SkillDef = ScriptableObject.CreateInstance<SkillDef>();
             SkillDef.activationState = new SerializableEntityStateType(typeof(Primary));
@@ -639,8 +639,8 @@ namespace SurvivorTemplate
         void SecondarySetup()
         {
             SkillLocator component = characterPrefab.GetComponent<SkillLocator>();
-            LanguageAPI.Add(SURVIVORNAMEKEY + "_M2", "Detonate");
-            LanguageAPI.Add(SURVIVORNAMEKEY + "_M2_DESCRIPTION", "Detonate all active Sticky Bombs for <style=cIsDamage>260% damage</style> each. For each Sticky Bomb attached to an enemy, deal bonus <style=cIsDamage>2.5% max hp damage</style> based on the attached enemy health.");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "_M2", "");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "_M2_DESCRIPTION", "");
 
             var SkillDef = ScriptableObject.CreateInstance<SkillDef>();
             SkillDef.activationState = new SerializableEntityStateType(typeof(Secondary));
@@ -681,8 +681,8 @@ namespace SurvivorTemplate
         void UtilitySetup()
         {
             SkillLocator component = characterPrefab.GetComponent<SkillLocator>();
-            LanguageAPI.Add(SURVIVORNAMEKEY + "_UTIL", "Poppy Bomb");
-            LanguageAPI.Add(SURVIVORNAMEKEY + "BOMBER_UTIL_DESCRIPTION", "Throw a Poppy Bomb that attaches to the environment. Activate again to detonate, dealing <style=cIsDamage>400% damage</style> and knocks up anyone near it. Affected players are granted <style=cKeywordName>Lightweight</style><style=cSub>");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "_UTIL", "");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "BOMBER_UTIL_DESCRIPTION", "");
 
             var SkillDef = ScriptableObject.CreateInstance<SkillDef>();
             SkillDef.activationState = new SerializableEntityStateType(typeof(Utility));
@@ -722,8 +722,8 @@ namespace SurvivorTemplate
         void SpecialSetup()
         {
             SkillLocator component = characterPrefab.GetComponent<SkillLocator>();
-            LanguageAPI.Add(SURVIVORNAMEKEY + "_SPEC", "Flash Bomb");
-            LanguageAPI.Add(SURVIVORNAMEKEY + "_SPEC_DESCRIPTION", "Target an area to launch a massive Flash Bomb that detonates 2 seconds after impact, dealing <style=cIsDamage>800% damage</style> and <style=cIsDamage>stuns</style> nearby enemies for <style=cIsDamage>3 seconds</style>.");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "_SPEC", "");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "_SPEC_DESCRIPTION", "");
 
             var SkillDef = ScriptableObject.CreateInstance<SkillDef>();
             SkillDef.activationState = new SerializableEntityStateType(typeof(Special));
