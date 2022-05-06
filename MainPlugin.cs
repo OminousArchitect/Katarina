@@ -418,20 +418,11 @@ namespace SurvivorTemplate
             CapsuleCollider capsuleCollider = characterPrefab.GetComponent<CapsuleCollider>();
             capsuleCollider.isTrigger = false;
             capsuleCollider.material = null;
-            capsuleCollider.center = new Vector3(0f, 0f, 0f);
-            capsuleCollider.radius = 0.7f;
-            capsuleCollider.height = 1.9f;
-            capsuleCollider.direction = 1;
 
             KinematicCharacterMotor kinematicCharacterMotor = characterPrefab.GetComponent<KinematicCharacterMotor>();
             kinematicCharacterMotor.CharacterController = characterMotor;
             kinematicCharacterMotor.Capsule = capsuleCollider;
             kinematicCharacterMotor.Rigidbody = rigidbody;
-
-            capsuleCollider.radius = 0.7f;
-            capsuleCollider.height = 1.9f;
-            capsuleCollider.center = new Vector3(0, 0, 0);
-            capsuleCollider.material = null;
 
             kinematicCharacterMotor.DetectDiscreteCollisions = false;
             kinematicCharacterMotor.GroundDetectionExtraDistance = 0f;
