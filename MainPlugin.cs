@@ -578,7 +578,7 @@ namespace SurvivorTemplate
             SkillLocator component = characterPrefab.GetComponent<SkillLocator>();
 
             LanguageAPI.Add(SURVIVORNAMEKEY + "_PASSIVE_NAME", "");
-            LanguageAPI.Add(SURVIVORNAMEKEY + "B_PASSIVE_DESCRIPTION", "");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "_PASSIVE_DESCRIPTION", "");
 
             component.passiveSkill.enabled = false;
             component.passiveSkill.skillNameToken = SURVIVORNAMEKEY + "_PASSIVE_NAME";
@@ -673,7 +673,7 @@ namespace SurvivorTemplate
         {
             SkillLocator component = characterPrefab.GetComponent<SkillLocator>();
             LanguageAPI.Add(SURVIVORNAMEKEY + "_UTIL", "");
-            LanguageAPI.Add(SURVIVORNAMEKEY + "BOMBER_UTIL_DESCRIPTION", "");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "_UTIL_DESCRIPTION", "");
 
             var SkillDef = ScriptableObject.CreateInstance<SkillDef>();
             SkillDef.activationState = new SerializableEntityStateType(typeof(Utility));
