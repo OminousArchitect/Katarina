@@ -42,7 +42,7 @@ namespace SurvivorTemplate
 
         private void Awake()
         {
-            //On.RoR2.Networking.GameNetworkManager.OnClientConnect += (self, user, t) => { };
+            //On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (self, user, t) => { };
 
             Assets.PopulateAssets();
             //Achievements.RegisterUnlockables();
