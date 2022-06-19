@@ -24,6 +24,15 @@ namespace SurvivorTemplate
 {
     class Utils
     {
+        public static Sprite CreateSpriteFromTexture(Texture2D texture)
+        {
+            if (texture)
+            {
+                var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                return sprite;
+            }
+            return null;
+        }
         public static GameObject FindInActiveObjectByName(string name)
         {
             Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
