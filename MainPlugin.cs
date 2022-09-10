@@ -262,8 +262,8 @@ namespace SurvivorTemplate
                     mesh = component2.FindChild("StickyBombs").gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh
                 },
             };
-            skinDefInfo.Name = SURVIVORNAMEKEY + "MODBODY_DEFAULT_SKIN_NAME";
-            skinDefInfo.NameToken = SURVIVORNAMEKEY + "MODBODY_DEFAULT_SKIN_NAME";
+            skinDefInfo.Name = SURVIVORNAMEKEY + "BODY_DEFAULT_SKIN_NAME";
+            skinDefInfo.NameToken = SURVIVORNAMEKEY + "BODY_DEFAULT_SKIN_NAME";
             skinDefInfo.RendererInfos = component.baseRendererInfos;
             skinDefInfo.RootObject = gameObject;
             skinDefInfo.UnlockableDef = null;
@@ -314,8 +314,8 @@ namespace SurvivorTemplate
                     mesh = Assets.MainAssetBundle.LoadAsset<Mesh>("mHead"),
                 },
             };
-            skinDefInfo2.Name = SURVIVORNAMEKEY + "MODBODY_MASTERY_SKIN_NAME";
-            skinDefInfo2.NameToken = SURVIVORNAMEKEY + "MODBODY_MASTERY_SKIN_NAME";
+            skinDefInfo2.Name = SURVIVORNAMEKEY + "BODY_MASTERY_SKIN_NAME";
+            skinDefInfo2.NameToken = SURVIVORNAMEKEY + "BODY_MASTERY_SKIN_NAME";
             skinDefInfo2.RendererInfos = component.baseRendererInfos;
             skinDefInfo2.RootObject = gameObject;
             skinDefInfo2.UnlockableDef = null;
