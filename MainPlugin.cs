@@ -505,15 +505,13 @@ namespace SurvivorTemplate
         {
             characterDisplay = PrefabAPI.InstantiateClone(characterPrefab.GetComponent<ModelLocator>().modelBaseTransform.gameObject, SURVIVORNAME + "Display", true);
             characterDisplay.AddComponent<NetworkIdentity>();
-            var c = characterDisplay.GetComponentInChildren<ModelSkinController>().skins;
+            CharacterModel cModel = characterDisplay.GetComponent<CharacterModel>();
+            var c = cModel.baseRendererInfos;
             for (int i = 0; i < c.Length; i++)
             {
-                var r = c[i].rendererInfos;
-                for (int re = 0; re < r.Length; re++)
-                {
-                    if (r[re].defaultMaterial.name.Contains("matCommandoDualies(Clone)"))
-                        r[re].defaultMaterial.shaderKeywords = null;
-                }
+                var mat = UnityEngine.Object.Instantiate(c[i].defaultMaterial);
+                mat.shaderKeywords = null;
+                c[i].defaultMaterial = mat;
             }
 
             string desc = "" +
