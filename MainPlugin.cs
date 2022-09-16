@@ -523,12 +523,12 @@ namespace SurvivorTemplate
                 + Environment.NewLine +
                 "<style=cSub>\r\n\r\n< ! > ";
 
-            string outro = "..and so he left, seeking the destruction of his next target.";
-            string fail = "..and so he vanished, saddened by the missed opportunities.";
+            string outro = "..and so he left.";
+            string fail = "..and so he vanished.";
 
             LanguageAPI.Add(SURVIVORNAMEKEY + "_NAME", SURVIVORNAME);
             LanguageAPI.Add(SURVIVORNAMEKEY + "_DESCRIPTION", desc);
-            LanguageAPI.Add(SURVIVORNAMEKEY + "_SUBTITLE", "SubHuman");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "_SUBTITLE", "");
             LanguageAPI.Add(SURVIVORNAMEKEY + "_OUTRO", outro);
             LanguageAPI.Add(SURVIVORNAMEKEY + "_FAIL", fail);
 
