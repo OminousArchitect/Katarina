@@ -415,7 +415,7 @@ namespace SurvivorTemplate
             rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
             rigidbody.constraints = RigidbodyConstraints.None;
 
-            CapsuleCollider capsuleCollider = characterPrefab.GetComponent<CapsuleCollider>();
+            CapsuleCollider capsuleCollider = childLocator.FindChild("collider").GetComponent<CapsuleCollider>();
             capsuleCollider.isTrigger = false;
             capsuleCollider.material = null;
 
@@ -443,7 +443,7 @@ namespace SurvivorTemplate
 
             HurtBoxGroup hurtBoxGroup = createModel.AddComponent<HurtBoxGroup>();
 
-            HurtBox componentInChildren = createModel.GetComponentInChildren<CapsuleCollider>().gameObject.AddComponent<HurtBox>();
+            HurtBox componentInChildren = capsuleCollider.gameObject.AddComponent<HurtBox>();
             componentInChildren.gameObject.layer = LayerIndex.entityPrecise.intVal;
             componentInChildren.healthComponent = healthComponent;
             componentInChildren.isBullseye = true;
