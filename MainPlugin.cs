@@ -212,8 +212,8 @@ namespace SurvivorTemplate
             ModelSkinController modelSkinController = gameObject.AddComponent<ModelSkinController>();
             ChildLocator component2 = gameObject.GetComponent<ChildLocator>();
             SkinnedMeshRenderer fieldValue = Reflection.GetFieldValue<SkinnedMeshRenderer>(component, "mainSkinnedMeshRenderer");
-            LanguageAPI.Add(SURVIVORNAMEKEY + "MODBODY_DEFAULT_SKIN_NAME", "Default");
-            LanguageAPI.Add(SURVIVORNAMEKEY + "MODBODY_MASTERY_SKIN_NAME", "Mastery");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "BODY_DEFAULT_SKIN_NAME", "Default");
+            LanguageAPI.Add(SURVIVORNAMEKEY + "BODY_MASTERY_SKIN_NAME", "Mastery");
 
             LoadoutAPI.SkinDefInfo skinDefInfo = default(LoadoutAPI.SkinDefInfo);
             skinDefInfo.BaseSkins = Array.Empty<SkinDef>();
