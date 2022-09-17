@@ -66,7 +66,7 @@ namespace SurvivorTemplate
             hitboxTransform1.transform.localPosition = Vector3.zero;
             hitboxTransform1.transform.localRotation = Quaternion.identity;
             hitboxTransform1.transform.localScale = scale;
-            var hitBoxGroup1 = parent.parent.gameObject.AddComponent<HitBoxGroup>();
+            var hitBoxGroup1 = parent.gameObject.AddComponent<HitBoxGroup>();
             HitBox hitBox = hitboxTransform1.AddComponent<HitBox>();
             hitboxTransform1.layer = LayerIndex.projectile.intVal;
             hitBoxGroup1.hitBoxes = new HitBox[] { hitBox };
