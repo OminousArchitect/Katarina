@@ -36,8 +36,6 @@ namespace SurvivorTemplate
         public const string SURVIVORNAME = "Survivor";
         public const string SURVIVORNAMEKEY = "SURVIVOR";
         public static GameObject characterPrefab;
-        public GameObject characterDisplay;
-        public GameObject doppelganger;
         private static readonly Color characterColor = new Color(0.7f, 0.7f, 0.7f);
 
         private void Awake()
@@ -50,27 +48,19 @@ namespace SurvivorTemplate
             CreatePrefab();
             RegisterStates();
             RegisterCharacter();
-            CreateDoppelganger();
             Hook.Hooks();
             //ItemDisplays.RegisterDisplays();
             //ItemDisplays.PopulateDisplays();
-        }
-        private static GameObject CreateModel(GameObject main)
-        {
-            Destroy(main.transform.Find("ModelBase").gameObject);
-            Destroy(main.transform.Find("CameraPivot").gameObject);
-            Destroy(main.transform.Find("AimOrigin").gameObject);
-
-            GameObject model = Assets.MainAssetBundle.LoadAsset<GameObject>("Survivor");
-
-            return model;
         }
         internal static void CreatePrefab()
         {
             characterPrefab = PrefabAPI.InstantiateClone(LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/CommandoBody"), SURVIVORNAME + "Body", true);
             characterPrefab.GetComponent<NetworkIdentity>().localPlayerAuthority = true;
+            Destroy(characterPrefab.transform.Find("ModelBase").gameObject);
+            Destroy(characterPrefab.transform.Find("CameraPivot").gameObject);
+            Destroy(characterPrefab.transform.Find("AimOrigin").gameObject);
 
-            GameObject createModel = CreateModel(characterPrefab);
+            GameObject model = Assets.MainAssetBundle.LoadAsset<GameObject>("Survivor");
 
             GameObject ModelBase = new GameObject("ModelBase");
             ModelBase.transform.parent = characterPrefab.transform;
@@ -84,7 +74,7 @@ namespace SurvivorTemplate
             gameObject3.transform.localRotation = Quaternion.identity;
             gameObject3.transform.localScale = Vector3.one;
 
-            Transform transform = createModel.transform;
+            Transform transform = model.transform;
             transform.parent = ModelBase.transform;
             transform.localPosition = Vector3.zero;
             transform.localScale = new Vector3(1f, 1f, 1f);
@@ -95,7 +85,7 @@ namespace SurvivorTemplate
             characterDirection.targetTransform = ModelBase.transform;
             characterDirection.overrideAnimatorForwardTransform = null;
             characterDirection.rootMotionAccumulator = null;
-            characterDirection.modelAnimator = createModel.GetComponentInChildren<Animator>();
+            characterDirection.modelAnimator = model.GetComponentInChildren<Animator>();
             characterDirection.driveFromRootRotation = false;
             characterDirection.turnSpeed = 720f;
 
@@ -167,16 +157,16 @@ namespace SurvivorTemplate
             modelLocator.normalizeToFloor = false;
             modelLocator.preserveModel = false;
 
-            ChildLocator childLocator = createModel.GetComponent<ChildLocator>();
+            ChildLocator childLocator = model.GetComponent<ChildLocator>();
 
-            CharacterModel characterModel = createModel.AddComponent<CharacterModel>();
+            CharacterModel characterModel = model.AddComponent<CharacterModel>();
             characterModel.body = bodyComponent;
             characterModel.baseRendererInfos = new CharacterModel.RendererInfo[]
             {
                 new CharacterModel.RendererInfo
                 {
-                    defaultMaterial = createModel.GetComponentInChildren<SkinnedMeshRenderer>().material,
-                    renderer = createModel.GetComponentInChildren<SkinnedMeshRenderer>(),
+                    defaultMaterial = model.GetComponentInChildren<SkinnedMeshRenderer>().material,
+                    renderer = model.GetComponentInChildren<SkinnedMeshRenderer>(),
                     defaultShadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On,
                     ignoreOverlays = false
                 },
@@ -349,7 +339,7 @@ namespace SurvivorTemplate
 
             var ragdollMaterial = LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/CommandoBody").GetComponentInChildren<RagdollController>().bones[1].GetComponent<Collider>().material;
 
-            var ragdoll = createModel.AddComponent<RagdollController>();
+            var ragdoll = model.AddComponent<RagdollController>();
             ragdoll.bones = new Transform[]
             {
                 component2.FindChild("stomach"),
@@ -377,12 +367,6 @@ namespace SurvivorTemplate
                     }
                 }
             }
-
-            TeamComponent teamComponent = null;
-            if (characterPrefab.GetComponent<TeamComponent>() != null) teamComponent = characterPrefab.GetComponent<TeamComponent>();
-            else teamComponent = characterPrefab.GetComponent<TeamComponent>();
-            teamComponent.hideAllyCardDisplay = false;
-            teamComponent.teamIndex = TeamIndex.None;
 
             HealthComponent healthComponent = characterPrefab.GetComponent<HealthComponent>();
             healthComponent.health = 110f;
@@ -441,7 +425,7 @@ namespace SurvivorTemplate
             kinematicCharacterMotor.InteractiveRigidbodyHandling = true;
             kinematicCharacterMotor.SafeMovement = false;
 
-            HurtBoxGroup hurtBoxGroup = createModel.AddComponent<HurtBoxGroup>();
+            HurtBoxGroup hurtBoxGroup = model.AddComponent<HurtBoxGroup>();
 
             HurtBox componentInChildren = capsuleCollider.gameObject.AddComponent<HurtBox>();
             componentInChildren.gameObject.layer = LayerIndex.entityPrecise.intVal;
@@ -459,7 +443,7 @@ namespace SurvivorTemplate
             hurtBoxGroup.mainHurtBox = componentInChildren;
             hurtBoxGroup.bullseyeCount = 1;
 
-            AimAnimator aimAnimator = createModel.AddComponent<AimAnimator>();
+            AimAnimator aimAnimator = model.AddComponent<AimAnimator>();
             aimAnimator.inputBank = inputBankTest;
             aimAnimator.directionComponent = characterDirection;
             aimAnimator.pitchRangeMax = 55f;
@@ -470,7 +454,7 @@ namespace SurvivorTemplate
             aimAnimator.yawGiveupRange = 10f;
             aimAnimator.giveupDuration = 8f;
 
-            FootstepHandler footstepHandler = createModel.AddComponent<FootstepHandler>();
+            FootstepHandler footstepHandler = model.AddComponent<FootstepHandler>();
             footstepHandler.baseFootstepString = "Play_player_footstep";
             footstepHandler.sprintFootstepOverrideString = "";
             footstepHandler.enableFootstepDust = true;
@@ -503,16 +487,16 @@ namespace SurvivorTemplate
         }
         private void RegisterCharacter()
         {
-            characterDisplay = PrefabAPI.InstantiateClone(characterPrefab.GetComponent<ModelLocator>().modelBaseTransform.gameObject, SURVIVORNAME + "Display", true);
+            var characterDisplay = PrefabAPI.InstantiateClone(characterPrefab.GetComponent<ModelLocator>().modelBaseTransform.gameObject, SURVIVORNAME + "Display", true);
             characterDisplay.AddComponent<NetworkIdentity>();
-            CharacterModel cModel = characterDisplay.GetComponent<CharacterModel>();
+            /*CharacterModel cModel = characterDisplay.GetComponent<CharacterModel>();
             var c = cModel.baseRendererInfos;
             for (int i = 0; i < c.Length; i++)
             {
                 var mat = UnityEngine.Object.Instantiate(c[i].defaultMaterial);
                 mat.shaderKeywords = null;
                 c[i].defaultMaterial = mat;
-            }
+            }*/
 
             string desc = "" +
                 "<style=cSub>\r\n\r\n< ! > "
@@ -548,6 +532,13 @@ namespace SurvivorTemplate
             ContentAddition.AddSurvivorDef(survivorDef);
 
             SkillSetup();
+
+            var characterMaster = PrefabAPI.InstantiateClone(LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/CommandoMonsterMaster"), SURVIVORNAME + "Master", true);
+
+            ContentAddition.AddMaster(characterMaster);
+
+            CharacterMaster component = characterMaster.GetComponent<CharacterMaster>();
+            component.bodyPrefab = characterPrefab;
         }
         void RegisterStates()
         {
@@ -749,17 +740,6 @@ namespace SurvivorTemplate
             };
             ContentAddition.AddSkillFamily(skillFamily);
 
-        }
-
-        private void CreateDoppelganger()
-        {
-
-            doppelganger = PrefabAPI.InstantiateClone(LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/CommandoMonsterMaster"), SURVIVORNAME + "Master", true);
-
-            ContentAddition.AddMaster(doppelganger);
-
-            CharacterMaster component = doppelganger.GetComponent<CharacterMaster>();
-            component.bodyPrefab = characterPrefab;
         }
     }
 }
