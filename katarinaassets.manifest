@@ -1,0 +1,119 @@
+ManifestFileVersion: 0
+CRC: 78718089
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e41d0e181aa9a9189e254cf1790f7a48
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 38bfba87699584aebcc9f82c6c91a9f1
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: c99b403139fbeab4d9069750386cdd3c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/KatarinaAssets/Animations/ToIdle.anim
+- Assets/KatarinaAssets/Materials/blade5.mat
+- Assets/KatarinaAssets/Animations/Shunpo.anim
+- Assets/KatarinaAssets/dagger1.fbx
+- Assets/KatarinaAssets/Animations/ToRun2.anim
+- Assets/KatarinaAssets/Materials/beast.mat
+- Assets/KatarinaAssets/Animations/Land2.anim
+- Assets/KatarinaAssets/Animations/DaggerPickup.anim
+- Assets/KatarinaAssets/KatIcon.png
+- Assets/KatarinaAssets/Materials/New Material.mat
+- Assets/KatarinaAssets/Animations/IdleIn.anim
+- Assets/KatarinaAssets/Animations/Animator.controller
+- Assets/KatarinaAssets/New FBX.fbx
+- Assets/KatarinaAssets/Animations/ToSprint.anim
+- Assets/KatarinaAssets/Animations/Run2.anim
+- Assets/KatarinaAssets/Animations/Test.anim
+- Assets/KatarinaAssets/Animations/DeathLotus.anim
+- Assets/KatarinaAssets/dagger2fab.prefab
+- Assets/KatarinaAssets/Animations/Land4.anim
+- Assets/KatarinaAssets/Animations/Attack1.anim
+- Assets/KatarinaAssets/dagger4.fbx
+- Assets/KatarinaAssets/dagger6fab.prefab
+- Assets/KatarinaAssets/Materials/katarina_skin29_blade4_tx_cm.dds
+- Assets/KatarinaAssets/Animations/IdleAdditive2.anim
+- Assets/KatarinaAssets/Materials/blade4.mat
+- Assets/KatarinaAssets/Animations/model.001_idle_uprightloop_to_runhaste_model.anim
+- Assets/KatarinaAssets/Materials/katarina_skin29_tx_cm.dds
+- Assets/KatarinaAssets/Materials/blade6.mat
+- Assets/KatarinaAssets/Materials/katarina_skin29_blade2_tx_cm.dds
+- Assets/KatarinaAssets/Passive1.png
+- Assets/KatarinaAssets/dagger5.fbx
+- Assets/KatarinaAssets/Materials/katarina_skin29_joke_tx_cm.dds
+- Assets/KatarinaAssets/Materials/katarina_skin29_blade3_tx_cm.dds
+- Assets/KatarinaAssets/Materials/blade3.mat
+- Assets/KatarinaAssets/dagger1fab.prefab
+- Assets/KatarinaAssets/dagger3fab.prefab
+- Assets/KatarinaAssets/Materials/model.mat
+- Assets/KatarinaAssets/Animations/Land.anim
+- Assets/KatarinaAssets/Animations/Sprint1.anim
+- Assets/KatarinaAssets/dagger5fab.prefab
+- Assets/KatarinaAssets/Animations/ToRun.anim
+- Assets/KatarinaAssets/dagger6.fbx
+- Assets/KatarinaAssets/texMainSkin.png
+- Assets/KatarinaAssets/Animations/Jump.anim
+- Assets/KatarinaAssets/Animations/IdleLoop1.anim
+- Assets/KatarinaAssets/Animations/InAir.anim
+- Assets/KatarinaAssets/Materials/blade2.mat
+- Assets/KatarinaAssets/dagger3.fbx
+- Assets/KatarinaAssets/Preparation.png
+- Assets/KatarinaAssets/Animations/ToSprint2.anim
+- Assets/KatarinaAssets/Materials/props.mat
+- Assets/KatarinaAssets/secondary.png
+- Assets/KatarinaAssets/Animations/IdleAdditive1.anim
+- Assets/KatarinaAssets/Materials/katarina_skin29_blade6_tx_cm.dds
+- Assets/KatarinaAssets/Animations/IdleIn2.anim
+- Assets/KatarinaAssets/Animations/IdleIn1.anim
+- Assets/KatarinaAssets/utility.png
+- Assets/KatarinaAssets/utility2.png
+- Assets/KatarinaAssets/dagger2.fbx
+- Assets/KatarinaAssets/dagger4fab.prefab
+- Assets/KatarinaAssets/Animations/ToRun0.anim
+- Assets/KatarinaAssets/Animations/animKatarina.controller
+- Assets/KatarinaAssets/Animations/Attack3Crit.anim
+- Assets/KatarinaAssets/katarina.prefab
+- Assets/KatarinaAssets/primary.png
+- Assets/KatarinaAssets/Materials/katarina_skin29_blade1_tx_cm.dds
+- Assets/KatarinaAssets/Materials/blade1.mat
+- Assets/KatarinaAssets/special.png
+- Assets/KatarinaAssets/Animations/Run1.anim
+- Assets/KatarinaAssets/Materials/katarina_skin29_blade5_tx_cm.dds
+- Assets/KatarinaAssets/Animations/IdleLoop2.anim
+- Assets/KatarinaAssets/Materials/katarina_skin29_lizard_tx_cm.dds
+- Assets/KatarinaAssets/Animations/Attack2.anim
+Dependencies: []

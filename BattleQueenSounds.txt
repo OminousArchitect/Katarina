@@ -1,0 +1,11 @@
+Event	ID	Name			Wwise Object Path	Notes
+	2674848417	Play_Shunpo			\Default Work Unit\Play_Shunpo	
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	3673881719	Volume_SFX			\Default Work Unit\Volume_SFX	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	836555959	Shunpo3	C:\Users\bosau\OneDrive\Documents\WwiseProjects\Battle Queen Sounds\.cache\Windows\SFX\Shunpo3_05842A19.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\Shunpo\Shunpo3		15048
+	851784670	Shunpo1	C:\Users\bosau\OneDrive\Documents\WwiseProjects\Battle Queen Sounds\.cache\Windows\SFX\Shunpo1_05842A19.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\Shunpo\Shunpo1		17917
+	1005614526	Shunpo2	C:\Users\bosau\OneDrive\Documents\WwiseProjects\Battle Queen Sounds\.cache\Windows\SFX\Shunpo2_05842A19.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\Shunpo\Shunpo2		15098
+
