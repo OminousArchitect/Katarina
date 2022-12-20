@@ -17,11 +17,26 @@ using UnityEngine.UI;
 using System.Security;
 using System.Security.Permissions;
 using System.Linq;
+using ExtraSkillSlots;
 using R2API.ContentManagement;
 
-namespace SurvivorTemplate
+namespace Katarina
 {
     class CharacterMain : GenericCharacterMain
     {
+        private KatarinaTracker component;
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            component = base.GetComponent<KatarinaTracker>();
+        }
+        public override void Update()
+        {
+            base.Update();
+            if (component && base.skillLocator && base.skillLocator.utility && base.skillLocator.utility.skillDef)
+            {
+                component.enable = base.skillLocator.utility.skillDef.skillNameToken == MainPlugin.SURVIVORNAMEKEY + "ALT_UTIL" && base.skillLocator.utility.IsReady();
+            }
+        }
     }
 }

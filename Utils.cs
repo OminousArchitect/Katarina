@@ -19,11 +19,32 @@ using System.Security.Permissions;
 using HG;
 using System.Runtime.InteropServices;
 using UnityEngine.Events;
+using UnityEngine.AddressableAssets;
+using static R2API.DamageAPI;
 
-namespace SurvivorTemplate
+namespace Katarina
 {
     class Utils
     {
+        private static Material defaultIndicatorMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matAreaIndicatorRim.mat").WaitForCompletion();
+        internal static ModdedDamageTypeHolderComponent SwapModdedDamageType(GameObject obj, ModdedDamageType moddedDamageType)
+        {
+            var component = obj.GetComponent<ModdedDamageTypeHolderComponent>();
+            component.Remove(Prefabs.blade1);
+            component.Add(moddedDamageType);
+            return component;
+        }
+        internal static GameObject CreateNewColoredIndicator(GameObject obj, Transform target, Color color)
+        {
+            Material newIndicatorMat = UnityEngine.Object.Instantiate(defaultIndicatorMat);
+            newIndicatorMat.SetColor("_TintColor", color);
+
+            var newObj = UnityEngine.Object.Instantiate(obj, target);
+            newObj.transform.localPosition = Vector3.zero;
+            newObj.transform.localScale = Vector3.one * GlobalValues.daggerPickupRadius;
+            newObj.GetComponentInChildren<MeshRenderer>().material = newIndicatorMat;
+            return newObj;
+        }
         internal static T CopyComponent<T>(T original, GameObject destination) where T : Component
         {
             System.Type type = original.GetType();

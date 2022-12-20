@@ -18,15 +18,16 @@ using System.Security;
 using System.Security.Permissions;
 using HG;
 using System.Runtime.InteropServices;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 
-namespace Spearman.SkillStates
+namespace Katarina
 {
     class MeleeSkillState : BaseSkillState
     {
         internal float hitPauseDuration;
-        internal float hopVelocity = EntityStates.Merc.Assaulter.smallHopVelocity;
-        internal string animParameter = "";
+        internal float hopVelocity = 4f;
+        internal string animParameter = "Slash.playbackRate";
         internal float hitPauseTimer;
         internal bool isInHitPause;
         internal BaseState.HitStopCachedState hitStopCachedState;
@@ -41,6 +42,8 @@ namespace Spearman.SkillStates
         internal DamageColorIndex damageColor = DamageColorIndex.Default;
         internal Vector3 forceVector = Vector3.back * 100;
         internal float attackStopwatch;
+        internal int maximumOverlapTargets = 100;
+        internal static bool slashed;
 
         public override void OnEnter()
         {
@@ -49,6 +52,7 @@ namespace Spearman.SkillStates
             isInHitPause = false;
             hitPauseDuration = EntityStates.Merc.GroundLight.hitPauseDuration / base.attackSpeedStat;
         }
+
         internal OverlapAttack NewOverlapAttack()
         {
             var attack = new OverlapAttack();
@@ -63,10 +67,11 @@ namespace Spearman.SkillStates
             attack.isCrit = base.characterBody.RollCrit();
             attack.damageColorIndex = damageColor;
             attack.damageType = damageType;
-            attack.maximumOverlapTargets = 100;
+            attack.maximumOverlapTargets = maximumOverlapTargets;
             attack.hitBoxGroup = this.hitBoxGroup;
             return attack;
         }
+        
         public override void FixedUpdate()
         {
             base.FixedUpdate();
