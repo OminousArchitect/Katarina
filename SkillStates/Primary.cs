@@ -26,7 +26,7 @@ namespace Katarina
     {
         private float duration;
         private float baseDuration = 0.65f;
-        private float meleeDamage = 1.8f; //TODO Melee Damage
+        private float meleeDamage = 2.1f; //TODO Melee Damage
         private float minimumSwingDelay = 0.25f;
         private Transform modelTransform;
         private GameObject hitEffect;
@@ -39,6 +39,7 @@ namespace Katarina
         public override void OnEnter()
         {
             base.OnEnter();
+            
             base.StartAimMode();
             duration = baseDuration / base.attackSpeedStat;
             if (MainPlugin.silentslash.Value)
@@ -114,16 +115,9 @@ namespace Katarina
         
         public override void OnExit()
         {
-            if (!slashed)
-            {
-                //EffectManager.SimpleMuzzleFlash(slashEffect, base.gameObject, LeftHand, false);
-            }
-            else
-            {
-                //EffectManager.SimpleMuzzleFlash(slashEffect, base.gameObject, RightHand, false);
-            }
             base.OnExit();
         }
+        
         public override InterruptPriority GetMinimumInterruptPriority()
         {
             return InterruptPriority.PrioritySkill;

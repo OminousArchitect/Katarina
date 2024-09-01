@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 78718089
+CRC: 174210093
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e41d0e181aa9a9189e254cf1790f7a48
+    Hash: 40006dbd293caf822f03357e7a9d195a
   TypeTreeHash:
     serializedVersion: 2
     Hash: 38bfba87699584aebcc9f82c6c91a9f1
@@ -54,10 +54,11 @@ Assets:
 - Assets/KatarinaAssets/KatIcon.png
 - Assets/KatarinaAssets/Materials/New Material.mat
 - Assets/KatarinaAssets/Animations/IdleIn.anim
+- Assets/KatarinaAssets/Animations/Sprint0.anim
+- Assets/KatarinaAssets/utility.png
+- Assets/KatarinaAssets/Animations/Charged.anim
 - Assets/KatarinaAssets/Animations/Animator.controller
-- Assets/KatarinaAssets/New FBX.fbx
 - Assets/KatarinaAssets/Animations/ToSprint.anim
-- Assets/KatarinaAssets/Animations/Run2.anim
 - Assets/KatarinaAssets/Animations/Test.anim
 - Assets/KatarinaAssets/Animations/DeathLotus.anim
 - Assets/KatarinaAssets/dagger2fab.prefab
@@ -68,7 +69,6 @@ Assets:
 - Assets/KatarinaAssets/Materials/katarina_skin29_blade4_tx_cm.dds
 - Assets/KatarinaAssets/Animations/IdleAdditive2.anim
 - Assets/KatarinaAssets/Materials/blade4.mat
-- Assets/KatarinaAssets/Animations/model.001_idle_uprightloop_to_runhaste_model.anim
 - Assets/KatarinaAssets/Materials/katarina_skin29_tx_cm.dds
 - Assets/KatarinaAssets/Materials/blade6.mat
 - Assets/KatarinaAssets/Materials/katarina_skin29_blade2_tx_cm.dds
@@ -84,6 +84,7 @@ Assets:
 - Assets/KatarinaAssets/Animations/Sprint1.anim
 - Assets/KatarinaAssets/dagger5fab.prefab
 - Assets/KatarinaAssets/Animations/ToRun.anim
+- Assets/KatarinaAssets/primaryAlt.png
 - Assets/KatarinaAssets/dagger6.fbx
 - Assets/KatarinaAssets/texMainSkin.png
 - Assets/KatarinaAssets/Animations/Jump.anim
@@ -93,13 +94,14 @@ Assets:
 - Assets/KatarinaAssets/dagger3.fbx
 - Assets/KatarinaAssets/Preparation.png
 - Assets/KatarinaAssets/Animations/ToSprint2.anim
+- Assets/KatarinaAssets/Animations/Run.anim
 - Assets/KatarinaAssets/Materials/props.mat
 - Assets/KatarinaAssets/secondary.png
 - Assets/KatarinaAssets/Animations/IdleAdditive1.anim
 - Assets/KatarinaAssets/Materials/katarina_skin29_blade6_tx_cm.dds
 - Assets/KatarinaAssets/Animations/IdleIn2.anim
 - Assets/KatarinaAssets/Animations/IdleIn1.anim
-- Assets/KatarinaAssets/utility.png
+- Assets/KatarinaAssets/utility old.png
 - Assets/KatarinaAssets/utility2.png
 - Assets/KatarinaAssets/dagger2.fbx
 - Assets/KatarinaAssets/dagger4fab.prefab
@@ -111,7 +113,6 @@ Assets:
 - Assets/KatarinaAssets/Materials/katarina_skin29_blade1_tx_cm.dds
 - Assets/KatarinaAssets/Materials/blade1.mat
 - Assets/KatarinaAssets/special.png
-- Assets/KatarinaAssets/Animations/Run1.anim
 - Assets/KatarinaAssets/Materials/katarina_skin29_blade5_tx_cm.dds
 - Assets/KatarinaAssets/Animations/IdleLoop2.anim
 - Assets/KatarinaAssets/Materials/katarina_skin29_lizard_tx_cm.dds

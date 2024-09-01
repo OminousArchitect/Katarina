@@ -27,7 +27,7 @@ namespace Katarina
     {
         private float duration = 2.5f;
         private float stopwatch;
-        private float damageCoefficient = 2.1f; //TODO Death Lotus Damage
+        private float damageCoefficient = 1.95f; //TODO Death Lotus Damage
         private float attackInterval;
         private float baseAttackInterval = 0.16f;
         private float radius = 33;
@@ -37,7 +37,6 @@ namespace Katarina
         private List<HurtBox> newTargets;
         private SphereSearch sphereSearch = new SphereSearch();
         private BladeController component;
-        private ICharacterGravityParameterProvider characterGravityParameterProvider;
         private int maxTargets
         {
             get
@@ -50,18 +49,17 @@ namespace Katarina
         public override void OnEnter()
         {
             base.OnEnter();
-            this.characterGravityParameterProvider = base.gameObject.GetComponent<ICharacterGravityParameterProvider>();
 
             component = base.GetComponent<BladeController>();
             if (component)
             {
-                if (MainPlugin.altlotusfx.Value)
+                if (!MainPlugin.altlotusfx.Value)
                 {
-                    orbEffect = Prefabs.altlotusfx;
+                    orbEffect = Prefabs.lotusfx;
                 }
                 else
                 {
-                    orbEffect = Prefabs.lotusfx;
+                    orbEffect = Prefabs.altlotusfx;
                 }
                 
                 /*switch (component.bladeIndex)
@@ -157,7 +155,7 @@ namespace Katarina
                 {
                     if (NetworkServer.active)   
                     {
-                        BladeOrb orb = new BladeOrb();
+                        LotusBladeOrb orb = new LotusBladeOrb();
                         orb.origin = base.characterBody.corePosition;
                         orb.target = priorityTargets[i];
                         orb.speed = GlobalValues.specialProjectileSpeed;
@@ -210,7 +208,7 @@ namespace Katarina
 
         public override InterruptPriority GetMinimumInterruptPriority()
         {
-            return InterruptPriority.Skill;
+            return InterruptPriority.Frozen;
         }
     }
 }

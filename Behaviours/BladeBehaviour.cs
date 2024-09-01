@@ -60,6 +60,7 @@ namespace Katarina
                 Destroy(areaIndicator);
             }
         }
+        
         private ChildLocator childLocator;
         private List<string> childNameList = new List<string>()
         {

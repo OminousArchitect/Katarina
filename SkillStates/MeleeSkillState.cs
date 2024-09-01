@@ -26,7 +26,7 @@ namespace Katarina
     class MeleeSkillState : BaseSkillState
     {
         internal float hitPauseDuration;
-        internal float hopVelocity = 4f;
+        internal float hopVelocity = 2f;
         internal string animParameter = "Slash.playbackRate";
         internal float hitPauseTimer;
         internal bool isInHitPause;
@@ -43,7 +43,6 @@ namespace Katarina
         internal Vector3 forceVector = Vector3.back * 100;
         internal float attackStopwatch;
         internal int maximumOverlapTargets = 100;
-        internal static bool slashed;
 
         public override void OnEnter()
         {
@@ -57,7 +56,7 @@ namespace Katarina
         {
             var attack = new OverlapAttack();
             attack.procChainMask = default(ProcChainMask);
-            attack.procCoefficient = 1f;
+            attack.procCoefficient = 1.1f;
             attack.attacker = base.gameObject;
             attack.inflictor = base.gameObject;
             attack.teamIndex = base.characterBody.teamComponent.teamIndex;

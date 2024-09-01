@@ -30,81 +30,169 @@ namespace Katarina
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
+            GlobalEventManager.onClientDamageNotified += GlobalEventManager_onClientDamageNotified;
         }
 
+        private static void GlobalEventManager_onClientDamageNotified(DamageDealtMessage damageDealtMessage)
+        {
+            //if (damageDealtMessage.victim.GetComponent<HealthComponent>().health <= 0 && damageDealtMessage.
+        }
+        
         private static void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)
         {
             var damageInfo = damageReport.damageInfo;
             if (damageReport.victim && damageReport.victimBody && damageReport.attacker && damageReport.attackerBody)
             {
-                var name = damageReport.attackerBody.name;
                 bool flag1 = damageInfo.HasModdedDamageType(Prefabs.blade1) || damageInfo.HasModdedDamageType(Prefabs.blade2) || damageInfo.HasModdedDamageType(Prefabs.blade3)
-                    || damageInfo.HasModdedDamageType(Prefabs.blade4) || damageInfo.HasModdedDamageType(Prefabs.blade5) || damageInfo.HasModdedDamageType(Prefabs.blade6);
+                             || damageInfo.HasModdedDamageType(Prefabs.blade4) || damageInfo.HasModdedDamageType(Prefabs.blade5) || damageInfo.HasModdedDamageType(Prefabs.blade6);
                 
                 //killed by Voracious Blade
                 if (flag1)
                 {
-                    if (damageReport.attackerBody.skillLocator && damageReport.attackerBody.skillLocator.secondary && MainPlugin.killexplosionfx.Value)
+                    if (damageReport.attackerBody.skillLocator.secondary.baseRechargeInterval == 9f)
                     {
                         damageReport.attackerBody.skillLocator.secondary.AddOneStock();
+                    }
+                    else if (damageReport.attackerBody.skillLocator.secondary.baseRechargeInterval == 5.5f)
+                    {
+                        bool oneDagger = damageReport.attackerBody.skillLocator.secondary.stock == 1;
+                        bool zeroDaggers = damageReport.attackerBody.skillLocator.secondary.stock == 0;
                         
-                        if (MainPlugin.killexplosionfx.Value)
+                        if (oneDagger || zeroDaggers)
                         {
-                            EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ImpactEffects/Bandit2ResetEffect"), new EffectData {origin = damageInfo.position}, true);
+                            damageReport.attackerBody.skillLocator.secondary.Reset();   
+                        }
+                        else
+                        {
+                            damageReport.attackerBody.skillLocator.secondary.AddOneStock();
                         }
                     }
-                    
+
                     if (NetworkServer.active)
                     {
                         damageReport.attackerBody.healthComponent.Heal(damageReport.victimBody.healthComponent.fullHealth * GlobalValues.secondaryHealCoefficient, default(ProcChainMask));
                     }
+                    
+                    if (MainPlugin.killexplosionfx.Value)
+                    {
+                        if (!MainPlugin.collapseEveryone.Value)
+                        {
+                            EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ImpactEffects/Bandit2ResetEffect"), new EffectData {origin = damageInfo.position}, true);
+                        }
+                        else
+                        {
+                            EffectManager.SpawnEffect(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/BleedOnHitVoid/FractureImpactEffect.prefab").WaitForCompletion(), new EffectData {origin = damageInfo.position}, true);
+                        }
+                    }
                 }
-                
+
                 //killed by Shunpo
                 if (damageInfo.HasModdedDamageType(Prefabs.blink))
                 {
                     ExtraSkillLocator extraskills = damageReport.attackerBody.GetComponent<ExtraSkillLocator>();
+                    if (extraskills.extraThird.stock == 0)
+                    {
+                        extraskills.extraThird.AddOneStock();
+                    }
+                    
+                    if (damageReport.attackerBody.skillLocator && damageReport.attackerBody.skillLocator.utility.stock == 0)
+                    {
+                        damageReport.attackerBody.skillLocator.utility.AddOneStock();
+                    }
+                    
+                    if (damageReport.attackerBody.skillLocator && damageReport.attackerBody.skillLocator.secondary.stock == 0)
+                    {
+                        damageReport.attackerBody.skillLocator.secondary.AddOneStock();
+                    }
+                    
+                    bool isFlying = damageReport.victimBody.isFlying;
+                    bool isVulture = damageReport.victimBody.bodyIndex == MainPlugin.vultureIndex;
+                    bool isPest = damageReport.victimBody.bodyIndex == MainPlugin.pestIndex;
 
+                    switch (MainPlugin.shunpoSetting.Value)
+                    {
+                        case 0:
+                            EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ImpactEffects/Bandit2ResetEffect"), new EffectData {origin = damageInfo.position}, true);
+                            break;
+                        case 1:
+                            EffectManager.SpawnEffect(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/BleedOnHitVoid/FractureImpactEffect.prefab").WaitForCompletion(), new EffectData {origin = damageInfo.position}, true);
+                            break;
+                        case 2:
+                            if (isFlying || isPest || isVulture)
+                            {
+                                EffectManager.SpawnEffect(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/BleedOnHitVoid/FractureImpactEffect.prefab").WaitForCompletion(), new EffectData {origin = damageInfo.position}, true);
+                            }
+                            else
+                            {
+                                EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ImpactEffects/Bandit2ResetEffect"), new EffectData {origin = damageInfo.position}, true);
+                            }
+                            break;
+                    }
+                }
+                
+                //killed by dagger pickup
+                if (damageInfo.HasModdedDamageType(Prefabs.daggerPickup))
+                {
+                    ExtraSkillLocator extraskills = damageReport.attackerBody.GetComponent<ExtraSkillLocator>();
+
+                    if (damageReport.attackerBody.bodyIndex == MainPlugin.katIndex && damageReport.attackerBody)
+                    {
+                        damageReport.attackerBody.AddTimedBuff(DLC1Content.Buffs.KillMoveSpeed, 2f);
+                    }
+                    
                     if (extraskills.extraThird.stock == 0)
                     {
                         extraskills.extraThird.AddOneStock();
                     }
 
+                    if (extraskills.extraSecond.stock == 0)
+                    {
+                        extraskills.extraSecond.AddOneStock();
+                    }
+                    
+                    if (damageReport.attackerBody.skillLocator && damageReport.attackerBody.skillLocator.secondary.stock == 0)
+                    {
+                        damageReport.attackerBody.skillLocator.secondary.AddOneStock();
+                    }
+                    
+                    if (damageReport.attackerBody.skillLocator && damageReport.attackerBody.skillLocator.utility.stock == 0)
+                    {
+                        damageReport.attackerBody.skillLocator.utility.AddOneStock();
+                    }
+                    
+                    if (MainPlugin.killexplosionfx.Value)
+                    {
+                        if (!MainPlugin.collapseEveryone.Value)
+                        {
+                            EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ImpactEffects/Bandit2ResetEffect"), new EffectData {origin = damageInfo.position}, true);
+                        }
+                        else
+                        {
+                            EffectManager.SpawnEffect(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/BleedOnHitVoid/FractureImpactEffect.prefab").WaitForCompletion(), new EffectData {origin = damageInfo.position}, true);
+                        }
+                    }
+                }
+                
+                //killed by melee attack
+                if (damageReport.attackerBody.bodyIndex == MainPlugin.katIndex && damageInfo.damageType == DamageType.BonusToLowHealth)
+                {
+                    ExtraSkillLocator extraskills = damageReport.attackerBody.GetComponent<ExtraSkillLocator>();
+                    
                     if (damageReport.attackerBody.skillLocator && damageReport.attackerBody.skillLocator.utility.stock == 0)
                     {
                         damageReport.attackerBody.skillLocator.utility.AddOneStock();
                     }
 
-                    if (MainPlugin.killexplosionfx.Value)
+                    if (extraskills.extraThird.stock == 0)
                     {
-                        EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ImpactEffects/Bandit2ResetEffect"), new EffectData {origin = damageInfo.position}, true);
-                    }
-                }
-                
-                //killed by dagger pickup
-                if (damageInfo.HasModdedDamageType((Prefabs.daggerPickup)))
-                {
-                    if (damageReport.attackerBody.skillLocator && damageReport.attackerBody.skillLocator.secondary.stock == 0)
-                    {
-                        damageReport.attackerBody.skillLocator.secondary.AddOneStock();
-                    }
-
-                    if (MainPlugin.killexplosionfx.Value)
-                    {
-                        EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ImpactEffects/Bandit2ResetEffect"), new EffectData {origin = damageInfo.position}, true);
+                        extraskills.extraThird.AddOneStock();
                     }
                 }
                 
                 //Recharge Special
-                if (name.Contains("NinesKatarinaBody") && damageReport.attackerBody.skillLocator && damageReport.attackerBody.skillLocator.special && NetworkServer.active)
+                if (damageReport.attackerBody.bodyIndex == MainPlugin.katIndex && damageReport.attackerBody.skillLocator && damageReport.attackerBody.skillLocator.special && NetworkServer.active)
                 {
                     damageReport.attackerBody.skillLocator.special.RunRecharge(GlobalValues.specialCDReductionOnKill);
-                }
-                
-                //Reset Shunpo on Melee Kill
-                if (MainPlugin.resetUtilityOnPrimaryKill.Value && name.Contains("NinesKatarinaBody") && damageInfo.damageType == DamageType.BonusToLowHealth && damageReport.attackerBody.skillLocator && damageReport.attackerBody.skillLocator.utility)
-                {
-                    damageReport.attackerBody.skillLocator.utility.Reset();
                 }
             }
         }
@@ -115,21 +203,67 @@ namespace Katarina
             {
                 DotController.InflictDot(self.gameObject, damageInfo.attacker, DotController.DotIndex.SuperBleed, 15f * damageInfo.procCoefficient, 1f);
             }
-
+            
             // This is for the M1 heal. We don't add ModdedDamageType to overlap attacks bc it is buggy as hell for clients. So instead we check for a vanilla damagetype and the attacker it comes from.
             if (damageInfo.attacker && damageInfo.attacker.name.Contains("NinesKatarinaBody"))
             {
                 var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
                 if (attackerBody && NetworkServer.active)
                 {
-                    if (damageInfo.damageType == DamageType.BonusToLowHealth)
+                    if (damageInfo.damageType == DamageType.BypassArmor)
                     {
-                        attackerBody.healthComponent.Heal(damageInfo.damage * GlobalValues.primaryHealCoefficient, default(ProcChainMask));
+                        //attackerBody.healthComponent.Heal(damageInfo.damage * 0.03f, default(ProcChainMask));
+                        //Debug.LogWarning("She really needs more healing idk what to do"); //TODO this
                     }
                 }
             }
-            orig(self, damageInfo);
+            
+            // This is for M2 omnivamp
+            var flag1 = damageInfo.HasModdedDamageType(Prefabs.blade1) || damageInfo.HasModdedDamageType(Prefabs.blade2) || damageInfo.HasModdedDamageType(Prefabs.blade3) || 
+                         damageInfo.HasModdedDamageType(Prefabs.blade4) || damageInfo.HasModdedDamageType(Prefabs.blade5) || damageInfo.HasModdedDamageType(Prefabs.blade6);
+            if (flag1 && NetworkServer.active)
+            {
+                var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
+                attackerBody.healthComponent.Heal(damageInfo.damage * 0.08f, default(ProcChainMask)); //TODO M2 omnivamp
+            }
+            
+            //Radial Slash healing
+            if (damageInfo.HasModdedDamageType(Prefabs.daggerPickup))
+            {
+                var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
+                if (attackerBody && NetworkServer.active)
+                { 
+                    attackerBody.healthComponent.Heal(damageInfo.damage * 0.03f, default(ProcChainMask));
+                }
+            }
 
+            //Botrk Shunpo
+            if (damageInfo.HasModdedDamageType(Prefabs.blink))
+            {
+                var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
+                float totaldamage;
+                var enemypercenthealth = self.health * 0.10f; //TODO Botrk Enemy Health %
+                float borkTotal = damageInfo.damage + enemypercenthealth;
+                        
+                if (self.body.isBoss)
+                {
+                    totaldamage = borkTotal * 0.70f;
+                }
+                else
+                {
+                    totaldamage = borkTotal;
+                }
+                damageInfo.damage = totaldamage;
+                        
+                float borkheal = damageInfo.damage * 0.07f; //TODO Botrk heal
+                attackerBody.healthComponent.Heal(borkheal, default(ProcChainMask));
+                        
+                /*Debug.Log($"{canimath} is total damage -- 30 + {enemypercenthealth}");
+                Debug.Log($"{borkheal} is  9 % healing");*/
+            }
+            
+            orig(self, damageInfo);
+            
             //Spawn Pickups
             if (damageInfo.attacker && self.alive)
             {

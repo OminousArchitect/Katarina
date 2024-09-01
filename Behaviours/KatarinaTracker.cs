@@ -31,6 +31,7 @@ namespace Katarina
             get
             {
                 return base.trackingTarget ? true : false;
+                
             }
         }
 

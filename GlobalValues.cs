@@ -9,12 +9,11 @@ namespace Katarina
 {
     class GlobalValues
     {
-        internal static float primaryHealCoefficient = MainPlugin.meleevamp.Value;
-        internal static float secondaryHealCoefficient = MainPlugin.daggerhealpercent.Value;
+        internal static float secondaryHealCoefficient = 0.1f;
         internal static float daggerPickupRadius = MainPlugin.daggerpickupzone.Value;
         internal static float daggerPickupExplosionRadius = MainPlugin.daggerpickupslash.Value;
         internal static float maxBlinkDistance = 175f;
-        internal static float specialProjectileSpeed = 50;
+        internal static float specialProjectileSpeed = 51;
         internal static float specialCDReductionOnKill = 4;
     }
 }

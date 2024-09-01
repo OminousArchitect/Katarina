@@ -26,26 +26,16 @@ namespace Katarina
         private float maxCharge = 0.42f;
         private float stopwatch;
         private bool done;
-        private bool configenabled;
         public override void FixedUpdate()
         {
             base.FixedUpdate();
 
-            if (MainPlugin.chargemechanic.Value)
-            {
-                configenabled = stopwatch >= maxCharge; //&& !base.inputBank.skill2.down;
-            }
-            else
-            {
-                configenabled = stopwatch >= maxCharge && !base.inputBank.skill2.down;
-            }
-            
             if (base.inputBank && base.inputBank.skill2.down)
             {
                 stopwatch += Time.fixedDeltaTime;
             }
             
-            if (stopwatch > maxCharge && !done) 
+            if (stopwatch > maxCharge && !done)
             {
                 done = true;
                 //Debug.Log("Charged");
@@ -58,18 +48,12 @@ namespace Katarina
                 this.outer.SetNextState(new ThrowSingleDagger());
                 return;
             }
-            if (configenabled && base.isAuthority)
+            
+            bool charged = stopwatch >= maxCharge; //&& !base.inputBank.skill2.down;
+            if (charged && base.isAuthority)
             {
-                if (MainPlugin.resetslashalt.Value)
-                {
-                    this.outer.SetNextState(new BaseDaggerPickupState());
-                }
-                else
-                {
-                    this.outer.SetNextState(new ThrowGenjiDaggers());
-                    return;
-                }
-
+                this.outer.SetNextState(new ThrowGenjiDaggers());
+                return;
             }
         }
         
@@ -81,11 +65,10 @@ namespace Katarina
     class ThrowSingleDagger : BaseSkillState
     {
         private float duration = 1;
-        public GameObject projectilePrefab;
-        public float damageCoefficient = 3.5f; //TODO SingleDagger Damage
+        internal GameObject projectilePrefab;
+        private float damageCoefficient = 3.6f; //TODO SingleDagger Damage
         private KatarinaTracker tracker;
         private CharacterBody target;
-        
         public override void OnEnter()
         {
             base.OnEnter();
@@ -173,10 +156,11 @@ namespace Katarina
         }
         protected virtual void FireProjectile()
         {
-
+            
             if (base.isAuthority)
             {
                 Ray aimRay = base.GetAimRay();
+
                 ProjectileManager.instance.FireProjectile
                 (
                     projectilePrefab,
@@ -186,7 +170,6 @@ namespace Katarina
                     base.characterBody.damage * damageCoefficient,
                     120,
                     Util.CheckRoll(base.characterBody.crit, base.characterBody.master),
-                    
                     DamageColorIndex.Default
                 );
                 base.PlayAnimation("Gesture, Override", "ThrowDagger");
@@ -249,10 +232,11 @@ namespace Katarina
             var aimRay = base.GetAimRay();
             RngPrefab();
             NewProjectile(base.GetAimRay().direction);
+            NewProjectile(new Vector3(aimRay.direction.x + -0.07f, aimRay.direction.y, aimRay.direction.z + -0.07f ));
+            NewProjectile(new Vector3(aimRay.direction.x + 0.07f, aimRay.direction.y, aimRay.direction.z + 0.07f ));
             RngPrefab();
-            NewProjectile(new Vector3(aimRay.direction.x + -0.15f, aimRay.direction.y, aimRay.direction.z /*+ -0.15f*/));
-            //RngPrefab();
-            NewProjectile(new Vector3(aimRay.direction.x + 0.15f, aimRay.direction.y, aimRay.direction.z /*+ 0.15f*/));
+            NewProjectile(new Vector3(aimRay.direction.x + -0.15f, aimRay.direction.y, aimRay.direction.z  + -0.15f ));
+            NewProjectile(new Vector3(aimRay.direction.x + 0.15f, aimRay.direction.y, aimRay.direction.z + 0.15f ));
             
             base.PlayAnimation("Gesture, Override", "ThrowDagger");
             AkSoundEngine.PostEvent(730767624, base.gameObject);

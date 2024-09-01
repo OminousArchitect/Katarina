@@ -53,8 +53,7 @@ namespace Katarina
         internal static GameObject shunpofx;
         internal static GameObject silentshunpofx;
         internal static GameObject silentslashfx;
-
-        //internal static GameObject targetindicator;
+        internal static GameObject silentcollapseEffect;
 
         //gotta create a damagetype for each blade color bc we gotta check for it on healthcomponent.TakeDamage, in order to spawn the correct pickup dagger color
         internal static ModdedDamageType blade1;
@@ -81,7 +80,7 @@ namespace Katarina
             blink = ReserveDamageType();
             daggerPickup = ReserveDamageType();
             
-            OrbAPI.AddOrb(typeof(BladeOrb));
+            OrbAPI.AddOrb(typeof(LotusBladeOrb));
             
             //var targettracker = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Huntress/HuntressTrackingIndicator.prefab").WaitForCompletion();
             //targetindicator = PrefabAPI.InstantiateClone(targettracker, "katarinatracker", false);
@@ -193,6 +192,11 @@ namespace Katarina
             silentslashfx = PrefabAPI.InstantiateClone(mercslash, "silentslashfx", false);
             silentslashfx.GetComponent<EffectComponent>().soundName = null;
             ContentAddition.AddEffect(silentslashfx);
+            
+            var collapseEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/BleedOnHitVoid/FractureImpactEffect.prefab").WaitForCompletion();
+            silentcollapseEffect = PrefabAPI.InstantiateClone(collapseEffect, "katcollapseEffect", false);
+            silentcollapseEffect.GetComponent<EffectComponent>().soundName = null;
+            ContentAddition.AddEffect(silentcollapseEffect);
 
             //setup for single dagger ghosts
             var dagger1throw = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger1fab"), "KatarinaThrown1", false);
@@ -222,7 +226,9 @@ namespace Katarina
             dagger1ProjectileThrow.GetComponent<ProjectileSimple>().desiredForwardSpeed = MainPlugin.throwvelocity.Value;
             dagger1ProjectileThrow.GetComponent<ProjectileSingleTargetImpact>().hitSoundString = "Play_DaggerLand";
             dagger1ProjectileThrow.GetComponent<ProjectileSingleTargetImpact>().enemyHitSoundString = "Play_DaggerHitEnemy";
-            dagger1ProjectileThrow.GetComponent<ProjectileController>().ghostPrefab = dagger1throw;
+            var singlecontroller = dagger1ProjectileThrow.GetComponent<ProjectileController>();
+            singlecontroller.ghostPrefab = dagger1throw;
+            singlecontroller.procCoefficient = 0.8f;
             ContentAddition.AddProjectile(dagger1ProjectileThrow);
 
             dagger2ProjectileThrow = PrefabAPI.InstantiateClone(dagger1ProjectileThrow, "KatarinaBlade2ProjectileThrow", true);
@@ -272,9 +278,12 @@ namespace Katarina
             //register Genji daggers
             dagger1ProjectileThrowBleed = PrefabAPI.InstantiateClone(baseProjectile, "KatarinaBlade1ProjectileThrowBleed", true);
             dagger1ProjectileThrowBleed.AddComponent<ModdedDamageTypeHolderComponent>().Add(bladeBleed);
-            dagger1ProjectileThrowBleed.GetComponent<ProjectileController>().ghostPrefab = dagger1bleed;
             dagger1ProjectileThrowBleed.GetComponent<ProjectileSingleTargetImpact>().hitSoundString = "Play_DaggerLand";
-            dagger1ProjectileThrowBleed.GetComponent<ProjectileSingleTargetImpact>().enemyHitSoundString = "Play_DaggerHitEnemy"; //todo do this
+            dagger1ProjectileThrowBleed.GetComponent<ProjectileSingleTargetImpact>().enemyHitSoundString = "Play_DaggerHitEnemy";
+            dagger1ProjectileThrowBleed.GetComponent<SphereCollider>().radius = 0.6f;
+            var genjicontroller = dagger1ProjectileThrowBleed.GetComponent<ProjectileController>();
+            genjicontroller.ghostPrefab = dagger1bleed;
+            genjicontroller.procCoefficient = 0.3f;
             ContentAddition.AddProjectile(dagger1ProjectileThrowBleed);
 
             dagger2ProjectileThrowBleed = PrefabAPI.InstantiateClone(dagger1ProjectileThrowBleed, "KatarinaBlade2ProjectileThrowBleed", true);

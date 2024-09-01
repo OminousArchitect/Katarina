@@ -32,6 +32,7 @@ namespace Katarina
         {
             this.outer.SetNextState(new Blink());
         }
+
         protected virtual void CreateAreaIndicator()
         {
             if (component)
@@ -39,6 +40,7 @@ namespace Katarina
                 component.InstantiateAreaIndicator();
             }
         }
+
         public override void OnEnter()
         {
             base.OnEnter();
@@ -46,6 +48,7 @@ namespace Katarina
             inputbank2 = outer.GetComponent<ExtraInputBankTest>();
             CreateAreaIndicator();
         }
+
         public override void FixedUpdate()
         {
             base.FixedUpdate();
@@ -56,7 +59,7 @@ namespace Katarina
             {
                 component.UpdateAreIndicatorPosition(base.GetAimRay());
             }
-            
+
             //if (base.inputBank && !base.inputBank.skill3.down && base.isAuthority)
             if (inputbank2 && !inputbank2.extraSkill3.down && base.isAuthority)
             {
@@ -64,48 +67,33 @@ namespace Katarina
                 return;
             }
         }
+
         public override void OnExit()
         {
             base.OnExit();
-            base.PlayAnimation("FullBody, Override","Shunpo");
+            base.PlayAnimation("FullBody, Override", "Shunpo");
             AkSoundEngine.PostEvent(2674848417, base.gameObject);
-            
         }
+
         public override InterruptPriority GetMinimumInterruptPriority()
         {
             return InterruptPriority.Skill;
         }
     }
+
     class Blink : MeleeSkillState
     {
         private float immunityDuration = 0.9f;
         private SphereSearch sphereSearch = new SphereSearch();
-        private BladeController component;
-        public Vector3 blinkPosition;
+        private BladeController bladeController;
+        protected KatarinaTracker katTracker;
+        protected Vector3 blinkPosition;
+        protected CharacterBody enemybody;
         private float radius = 8;
         private float coefficient;
-        protected virtual void SetBlinkPosition()
-        {
-            if (component) 
-            {
-                blinkPosition = component.areaIndicatorPosition; //arrival
-                component.DestroyAreaIndicator();
-                if (MainPlugin.vfxarrival.Value)
-                {
-                    if (MainPlugin.silentshunpo.Value)
-                    {
-                        EffectManager.SimpleEffect(Prefabs.silentshunpofx, blinkPosition, 
-                            Quaternion.identity, false); 
-                    }
-                    else
-                    {
-                        EffectManager.SimpleEffect(Prefabs.shunpofx, blinkPosition, 
-                            Quaternion.identity, false);
-                    }
-                }
-            }
-        }
 
+        private GameObject silentCollapse = Prefabs.silentcollapseEffect; //Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/BleedOnHitVoid/FractureImpactEffect.prefab").WaitForCompletion();
+        
         public override void OnEnter()
         {
             base.OnEnter();
@@ -113,9 +101,9 @@ namespace Katarina
             {
                 base.characterBody.AddTimedBuff(RoR2Content.Buffs.HiddenInvincibility, immunityDuration);
             }
-            component = base.GetComponent<BladeController>();
-            SetBlinkPosition();
             
+            bladeController = base.GetComponent<BladeController>();
+            SetBlinkPosition();
             if (base.isAuthority)
             {
                 TeleportHelper.TeleportBody(base.characterBody, blinkPosition);
@@ -124,23 +112,27 @@ namespace Katarina
             this.sphereSearch.origin = blinkPosition;
             this.sphereSearch.radius = radius;
             this.sphereSearch.mask = LayerIndex.entityPrecise.mask;
-            var hurtbox = sphereSearch.RefreshCandidates().FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(TeamIndex.Player)).OrderCandidatesByDistance().FilterCandidatesByDistinctHurtBoxEntities().GetHurtBoxes()[0];
+            
+            var hurtbox = sphereSearch.RefreshCandidates()
+                .FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(TeamIndex.Player)).OrderCandidatesByDistance()
+                .FilterCandidatesByDistinctHurtBoxEntities().GetHurtBoxes()[0];
             if (hurtbox && hurtbox.healthComponent)
             {
                 bool flag1 = hurtbox.healthComponent.body.isFlying;
                 bool flag2 = hurtbox.healthComponent.body.bodyIndex == MainPlugin.vultureIndex;
                 bool flag3 = hurtbox.healthComponent.body.bodyIndex == MainPlugin.pestIndex;
-                
+
                 if (flag1 || flag2 || flag3)
                 {
                     coefficient = MainPlugin.ihateflyingenemies.Value; //TODO Shunpo flying damage
+                    FreezeVelocity();
                 }
-                
+
                 else
                 {
                     coefficient = MainPlugin.blinkdmg.Value; //TODO Shunpo damage
                 }
-                
+
                 if (NetworkServer.active)
                 {
                     DamageInfo damageInfo = new DamageInfo()
@@ -148,7 +140,7 @@ namespace Katarina
                         attacker = base.characterBody.gameObject,
                         inflictor = base.characterBody.gameObject,
                         damage = base.characterBody.damage * coefficient,
-                        procCoefficient = 1,
+                        procCoefficient = 1.3f,
                         damageType = DamageType.Generic,
                         damageColorIndex = DamageColorIndex.Default,
                         position = hurtbox.transform.position,
@@ -157,33 +149,73 @@ namespace Katarina
                     damageInfo.AddModdedDamageType(Prefabs.blink);
                     hurtbox.healthComponent.TakeDamage(damageInfo);
                 }
+
+                if (MainPlugin.shunpodamagefx.Value)
+                {
+                    EffectManager.SimpleEffect(silentCollapse, hurtbox.healthComponent.body.corePosition, Quaternion.identity, false);
+                }
             }
         }
 
-        public override void OnExit()
+        protected virtual void SetBlinkPosition()
         {
-            base.OnExit();
-            if (MainPlugin.vfxaim.Value)
+            if (bladeController)
             {
-                if (MainPlugin.silentshunpo.Value)
+                blinkPosition = bladeController.areaIndicatorPosition; //arrival
+                bladeController.DestroyAreaIndicator();
+                
+                if (MainPlugin.shunpofx.Value)
                 {
-                    EffectManager.SimpleEffect(Prefabs.silentshunpofx, base.characterBody.corePosition,
-                        Quaternion.identity, false); //aim
+                    bool loud = MainPlugin.loudshunpo.Value;
+                    if (loud)
+                    {
+                        EffectManager.SimpleEffect(Prefabs.shunpofx, blinkPosition,
+                            Quaternion.identity, false);
+                    }
+                    else
+                    {
+                        EffectManager.SimpleEffect(Prefabs.silentshunpofx, blinkPosition,
+                            Quaternion.identity, false);
+                    }
                 }
-                else
+            }
+        }
+
+        protected virtual void FreezeVelocity()
+        {
+
+        }
+
+        protected virtual void DoAimEffects()
+        {
+            if (MainPlugin.shunpofx.Value)
+            {
+                if (MainPlugin.loudshunpo.Value)
                 {
                     EffectManager.SimpleEffect(Prefabs.shunpofx, base.characterBody.corePosition,
                         Quaternion.identity, false);
                 }
+                else
+                {
+                    EffectManager.SimpleEffect(Prefabs.silentshunpofx, base.characterBody.corePosition,
+                        Quaternion.identity, false); //aim
+                }
             }
         }
+        
+        public override void OnExit()
+        {
+            DoAimEffects();
+        }
     }
+
     class AltUtility : Utility
     {
         protected override void CreateAreaIndicator()
         {
-            
+
         }
+
         protected override void NextState()
         {
             this.outer.SetNextState(new BlinkTarget());
@@ -192,36 +224,49 @@ namespace Katarina
 
     class BlinkTarget : Blink
     {
-        internal float hopVelocity = 13f; //EntityStates.Merc.Assaulter.smallHopVelocity;
         protected override void SetBlinkPosition()
         {
-            KatarinaTracker tracker = base.GetComponent<KatarinaTracker>();
-            if (tracker)
+            katTracker = base.GetComponent<KatarinaTracker>();
+            if (katTracker)
             {
-                var target = tracker.GetTrackingTarget();              
-                blinkPosition = target ? target.transform.position : base.characterBody.corePosition;
+                var target = katTracker.GetTrackingTarget();
+                
+                if (target)
+                { 
+                    enemybody = target.healthComponent.GetComponent<CharacterBody>();
+                    var inputbank = enemybody.inputBank;
 
-                //Hopping anyway to avoid getting damage when teleporting while falling down
-                base.SmallHop(base.characterMotor, hopVelocity);
+                    if (inputbank)
+                    {
+                        Ray enemylook = inputbank.GetAimRay();
+                        blinkPosition = enemylook.origin + enemylook.direction * 2f;
+                        DontBeZero();
+                    }
+                    else
+                    {
+                        blinkPosition = target ? target.transform.position : base.characterBody.corePosition;
+                    }
+                }
             }
         }
 
-        public override void OnExit()
+        private void DontBeZero()
         {
-            base.OnExit();
-            if (MainPlugin.vfxtargetarrival.Value)
+            if (blinkPosition == Vector3.zero)
             {
-                if (MainPlugin.silentshunpo.Value)
-                {
-                    EffectManager.SimpleEffect(Prefabs.silentshunpofx, base.characterBody.corePosition,
-                        Quaternion.identity, false); //target arrival
-                }
-                else
-                {
-                    EffectManager.SimpleEffect(Prefabs.shunpofx, base.characterBody.corePosition,
-                        Quaternion.identity, false);
-                }
+                blinkPosition = base.characterBody.corePosition;
             }
+        }
+        
+        private float mercsmallhop = EntityStates.Merc.Assaulter.smallHopVelocity;
+        protected override void FreezeVelocity()
+        {
+            if (!base.characterMotor.isGrounded)
+            {
+                base.SmallHop(base.characterMotor, mercsmallhop + 2f);
+            }
+            PlayAnimation("FullBody, Override", "DaggerPickup");
         }
     }
 }
+            

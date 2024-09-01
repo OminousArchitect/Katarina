@@ -25,7 +25,7 @@ using RoR2.CharacterAI;
 
 namespace Katarina
 {
-    class BladeOrb : Orb
+    class LotusBladeOrb : Orb
     {
         public float speed;
         public float damage;
@@ -58,7 +58,7 @@ namespace Katarina
                     position = this.target.transform.position,
                     rejected = false,
                 };
-                damageInfo.AddModdedDamageType(Prefabs.blink);
+                //damageInfo.AddModdedDamageType(Prefabs.blink);
                 this.target.healthComponent.TakeDamage(damageInfo);
             }
         }

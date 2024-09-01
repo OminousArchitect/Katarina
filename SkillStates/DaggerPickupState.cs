@@ -17,6 +17,7 @@ using UnityEngine.UI;
 using System.Security;
 using System.Security.Permissions;
 using System.Linq;
+using ExtraSkillSlots;
 using R2API.ContentManagement;
 using UnityEngine.AddressableAssets;
 
@@ -27,8 +28,8 @@ namespace Katarina
         private float duration = 1;
         private GameObject impactEffect = Prefabs.pickupfx;
         private GameObject aoeEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercSwordSlashWhirlwind.prefab").WaitForCompletion();
-        private float damageCoefficient = 4.2f; //TODO DaggerPickup Damage
-        private float utilityCDToSet = 1f;
+        private float damageCoefficient = 5f; //TODO DaggerPickup Damage
+        private float utilityCDToSet = 2f;
         private EffectIndex effectIndex
         {
             get
@@ -48,9 +49,17 @@ namespace Katarina
                     base.characterBody.skillLocator.utility.RunRecharge(base.characterBody.skillLocator.utility.finalRechargeInterval - utilityCDToSet);
                 }
             }
+
+            ExtraSkillLocator extraskills = base.characterBody.GetComponent<ExtraSkillLocator>();
+            
+            if (extraskills.extraThird && extraskills.extraThird.stock == 0)
+            {
+                extraskills.extraThird.RunRecharge(extraskills.extraThird.finalRechargeInterval - utilityCDToSet);
+            }
+            
             base.PlayAnimation("FullBody, Override", "DaggerPickup");
             AkSoundEngine.PostEvent(3507441748, base.gameObject);
-            EffectManager.SimpleEffect(aoeEffect, base.characterBody.footPosition, Quaternion.identity, false);
+            EffectManager.SimpleEffect(aoeEffect, base.characterBody.corePosition, Quaternion.identity, false);
             if (base.isAuthority)
             {
                 var pickup = new BlastAttack();
