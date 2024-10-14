@@ -54,6 +54,7 @@ namespace Katarina
         internal static GameObject silentshunpofx;
         internal static GameObject silentslashfx;
         internal static GameObject silentcollapseEffect;
+        internal static GameObject aimIndicator;
 
         //gotta create a damagetype for each blade color bc we gotta check for it on healthcomponent.TakeDamage, in order to spawn the correct pickup dagger color
         internal static ModdedDamageType blade1;
@@ -93,28 +94,43 @@ namespace Katarina
             baseProjectile.GetComponent<ProjectileSingleTargetImpact>().hitSoundString = null;
             baseProjectile.GetComponent<ProjectileSingleTargetImpact>().enemyHitSoundString = null;
             
+            aimIndicator = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Huntress/HuntressTrackingIndicator.prefab").WaitForCompletion(), "KatAimIndicator", false);
+            foreach (SpriteRenderer s in aimIndicator.GetComponentsInChildren<SpriteRenderer>())
+            {
+                float tH, tS, tV;
+                Color.RGBToHSV(Color.magenta, out tH, out tS, out tV);
+
+                float H, S, V;
+                Color.RGBToHSV(s.color, out H, out S, out V);
+
+                Color newColor = Color.HSVToRGB(tH, S, V);
+                newColor.a = s.color.a;
+
+                s.color = newColor;
+            }
+            
             //setup ghosts for pickup daggers
-            var dagger1ProjectileGhost = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger1fab"), "KatarinaBlade1ProjectileGhost", false);
+            var dagger1ProjectileGhost = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger1fab"), "KatarinaBlade1ProjectileGhost", false);
             dagger1ProjectileGhost.AddComponent<ProjectileGhostController>();
             Utils.CreateNewColoredIndicator(defaultIndicator, dagger1ProjectileGhost.transform, new Color(1f, 0f, 0.792156863f));
 
-            var dagger2ProjectileGhost = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger2fab"), "KatarinaBlade2ProjectileGhost", false);
+            var dagger2ProjectileGhost = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger2fab"), "KatarinaBlade2ProjectileGhost", false);
             dagger2ProjectileGhost.AddComponent<ProjectileGhostController>();
             Utils.CreateNewColoredIndicator(defaultIndicator, dagger2ProjectileGhost.transform, new Color(0.592156863f, 0f, 0.964705882f));
 
-            var dagger3ProjectileGhost = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger3fab"), "KatarinaBlade3ProjectileGhost", false);
+            var dagger3ProjectileGhost = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger3fab"), "KatarinaBlade3ProjectileGhost", false);
             dagger3ProjectileGhost.AddComponent<ProjectileGhostController>();
             Utils.CreateNewColoredIndicator(defaultIndicator, dagger3ProjectileGhost.transform, new Color(0f, 0.964705882f, 0.0823529412f));
 
-            var dagger4ProjectileGhost = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger4fab"), "KatarinaBlade4ProjectileGhost", false);
+            var dagger4ProjectileGhost = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger4fab"), "KatarinaBlade4ProjectileGhost", false);
             dagger4ProjectileGhost.AddComponent<ProjectileGhostController>();
             Utils.CreateNewColoredIndicator(defaultIndicator, dagger4ProjectileGhost.transform, new Color(1f, 0f, 0f));
 
-            var dagger5ProjectileGhost = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger5fab"), "KatarinaBlade5ProjectileGhost", false);
+            var dagger5ProjectileGhost = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger5fab"), "KatarinaBlade5ProjectileGhost", false);
             dagger5ProjectileGhost.AddComponent<ProjectileGhostController>();
             Utils.CreateNewColoredIndicator(defaultIndicator, dagger5ProjectileGhost.transform, new Color(0.0235294118f, 0.611764706f, 1f));
 
-            var dagger6ProjectileGhost = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger6fab"), "KatarinaBlade6ProjectileGhost", false);
+            var dagger6ProjectileGhost = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger6fab"), "KatarinaBlade6ProjectileGhost", false);
             dagger6ProjectileGhost.AddComponent<ProjectileGhostController>();
             Utils.CreateNewColoredIndicator(defaultIndicator, dagger6ProjectileGhost.transform, new Color(0.207843137f, 0.031372549f, 0.537254902f));
 
@@ -143,26 +159,91 @@ namespace Katarina
             dagger2ProjectilePickup = PrefabAPI.InstantiateClone(dagger1ProjectilePickup, "KatarinaBlade2ProjectilePickup", true);
             dagger2ProjectilePickup.GetComponent<ProjectileController>().ghostPrefab = dagger2ProjectileGhost;
             dagger2ProjectilePickup.GetComponent<ProjectileStickOnImpact>().stickSoundString = "Play_DaggerLand";
+            var sphere2 = dagger2ProjectilePickup.AddComponent<SphereCollider>();
+            sphere2.isTrigger = true;
+            sphere2.radius = 1.34f;
+            var hurtboxGroup2 = dagger2ProjectilePickup.AddComponent<HurtBoxGroup>();
+            var hurtBox2 = dagger2ProjectilePickup.AddComponent<HurtBox>();
+            hurtBox2.healthComponent = null;
+            hurtBox2.isBullseye = true;
+            hurtBox2.damageModifier = HurtBox.DamageModifier.Normal;
+            hurtBox2.hurtBoxGroup = hurtboxGroup2;
+            hurtBox2.indexInGroup = 0;
+            hurtboxGroup2.hurtBoxes = new HurtBox[] { hurtBox2 };
+            hurtboxGroup2.mainHurtBox = hurtBox2;
+            hurtboxGroup2.bullseyeCount = 1;
             ContentAddition.AddProjectile(dagger2ProjectilePickup);
 
             dagger3ProjectilePickup = PrefabAPI.InstantiateClone(dagger1ProjectilePickup, "KatarinaBlade3ProjectilePickup", true);
             dagger3ProjectilePickup.GetComponent<ProjectileController>().ghostPrefab = dagger3ProjectileGhost;
             dagger3ProjectilePickup.GetComponent<ProjectileStickOnImpact>().stickSoundString = "Play_DaggerLand";
+            var sphere3 = dagger3ProjectilePickup.AddComponent<SphereCollider>();
+            sphere3.isTrigger = true;
+            sphere3.radius = 1.34f;
+            var hurtboxGroup3 = dagger3ProjectilePickup.AddComponent<HurtBoxGroup>();
+            var hurtBox3 = dagger3ProjectilePickup.AddComponent<HurtBox>();
+            hurtBox3.healthComponent = null;
+            hurtBox3.isBullseye = true;
+            hurtBox3.damageModifier = HurtBox.DamageModifier.Normal;
+            hurtBox3.hurtBoxGroup = hurtboxGroup3;
+            hurtBox3.indexInGroup = 0;
+            hurtboxGroup3.hurtBoxes = new HurtBox[] { hurtBox3 };
+            hurtboxGroup3.mainHurtBox = hurtBox3;
+            hurtboxGroup3.bullseyeCount = 1;
             ContentAddition.AddProjectile(dagger3ProjectilePickup);
 
             dagger4ProjectilePickup = PrefabAPI.InstantiateClone(dagger1ProjectilePickup, "KatarinaBlade4ProjectilePickup", true);
             dagger4ProjectilePickup.GetComponent<ProjectileController>().ghostPrefab = dagger4ProjectileGhost;
             dagger4ProjectilePickup.GetComponent<ProjectileStickOnImpact>().stickSoundString = "Play_DaggerLand";
+            var sphere4 = dagger4ProjectilePickup.AddComponent<SphereCollider>();
+            sphere4.isTrigger = true;
+            sphere4.radius = 1.34f;
+            var hurtboxGroup4 = dagger4ProjectilePickup.AddComponent<HurtBoxGroup>();
+            var hurtBox4 = dagger4ProjectilePickup.AddComponent<HurtBox>();
+            hurtBox4.healthComponent = null;
+            hurtBox4.isBullseye = true;
+            hurtBox4.damageModifier = HurtBox.DamageModifier.Normal;
+            hurtBox4.hurtBoxGroup = hurtboxGroup4;
+            hurtBox4.indexInGroup = 0;
+            hurtboxGroup4.hurtBoxes = new HurtBox[] { hurtBox4 };
+            hurtboxGroup4.mainHurtBox = hurtBox4;
+            hurtboxGroup4.bullseyeCount = 1;
             ContentAddition.AddProjectile(dagger4ProjectilePickup);
 
             dagger5ProjectilePickup = PrefabAPI.InstantiateClone(dagger1ProjectilePickup, "KatarinaBlade5ProjectilePickup", true);
             dagger5ProjectilePickup.GetComponent<ProjectileController>().ghostPrefab = dagger5ProjectileGhost;
             dagger5ProjectilePickup.GetComponent<ProjectileStickOnImpact>().stickSoundString = "Play_DaggerLand";
+            var sphere5 = dagger5ProjectilePickup.AddComponent<SphereCollider>();
+            sphere5.isTrigger = true;
+            sphere5.radius = 1.34f;
+            var hurtboxGroup5 = dagger5ProjectilePickup.AddComponent<HurtBoxGroup>();
+            var hurtBox5 = dagger5ProjectilePickup.AddComponent<HurtBox>();
+            hurtBox5.healthComponent = null;
+            hurtBox5.isBullseye = true;
+            hurtBox5.damageModifier = HurtBox.DamageModifier.Normal;
+            hurtBox5.hurtBoxGroup = hurtboxGroup5;
+            hurtBox5.indexInGroup = 0;
+            hurtboxGroup5.hurtBoxes = new HurtBox[] { hurtBox5 };
+            hurtboxGroup5.mainHurtBox = hurtBox5;
+            hurtboxGroup5.bullseyeCount = 1;
             ContentAddition.AddProjectile(dagger5ProjectilePickup);
 
             dagger6ProjectilePickup = PrefabAPI.InstantiateClone(dagger1ProjectilePickup, "KatarinaBlade6ProjectilePickup", true);
             dagger6ProjectilePickup.GetComponent<ProjectileController>().ghostPrefab = dagger6ProjectileGhost;
-            dagger5ProjectilePickup.GetComponent<ProjectileStickOnImpact>().stickSoundString = "Play_DaggerLand";
+            dagger6ProjectilePickup.GetComponent<ProjectileStickOnImpact>().stickSoundString = "Play_DaggerLand";
+            var sphere6 = dagger6ProjectilePickup.AddComponent<SphereCollider>();
+            sphere6.isTrigger = true;
+            sphere6.radius = 1.34f;
+            var hurtboxGroup6 = dagger6ProjectilePickup.AddComponent<HurtBoxGroup>();
+            var hurtBox6 = dagger6ProjectilePickup.AddComponent<HurtBox>();
+            hurtBox6.healthComponent = null;
+            hurtBox6.isBullseye = true;
+            hurtBox6.damageModifier = HurtBox.DamageModifier.Normal;
+            hurtBox6.hurtBoxGroup = hurtboxGroup6;
+            hurtBox6.indexInGroup = 0;
+            hurtboxGroup6.hurtBoxes = new HurtBox[] { hurtBox6 };
+            hurtboxGroup6.mainHurtBox = hurtBox6;
+            hurtboxGroup6.bullseyeCount = 1;
             ContentAddition.AddProjectile(dagger6ProjectilePickup);
             
             var mercfx = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/OmniImpactVFXSlashMerc.prefab").WaitForCompletion();
@@ -199,27 +280,27 @@ namespace Katarina
             ContentAddition.AddEffect(silentcollapseEffect);
 
             //setup for single dagger ghosts
-            var dagger1throw = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger1fab"), "KatarinaThrown1", false);
+            var dagger1throw = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger1fab"), "KatarinaThrown1", false);
             dagger1throw.AddComponent<ProjectileGhostController>();
             
-            var dagger2throw = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger2fab"), "KatarinaThrown2", false);
+            var dagger2throw = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger2fab"), "KatarinaThrown2", false);
             dagger2throw.AddComponent<ProjectileGhostController>();
             
-            var dagger3throw = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger3fab"), "KatarinaThrown3", false);
+            var dagger3throw = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger3fab"), "KatarinaThrown3", false);
             dagger3throw.AddComponent<ProjectileGhostController>();
             
-            var dagger4throw = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger4fab"), "KatarinaThrown4", false);
+            var dagger4throw = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger4fab"), "KatarinaThrown4", false);
             dagger4throw.AddComponent<ProjectileGhostController>();
             
-            var dagger5throw = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger5fab"), "KatarinaThrown5", false);
+            var dagger5throw = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger5fab"), "KatarinaThrown5", false);
             dagger5throw.AddComponent<ProjectileGhostController>();
             
-            var dagger6throw = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger6fab"), "KatarinaThrown6", false);
+            var dagger6throw = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger6fab"), "KatarinaThrown6", false);
             dagger6throw.AddComponent<ProjectileGhostController>();
 
             //register single daggers
             dagger1ProjectileThrow = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Bandit2/Bandit2ShivProjectile.prefab").WaitForCompletion(), "KatarinaBlade1ProjectileThrow", true);
-            //Component I created to quickly destroy the projectile after it collides with an entity. Adding only for this version bc it should only spawn a model if it collides with terrain.
+            //Component I created to quickly destroy the projectile after it collides with an entity. Adding for this version bc it should only spawn a model if it collides with terrain.
             dagger1ProjectileThrow.AddComponent<DestroyProjectileOnImpact>();
             dagger1ProjectileThrow.AddComponent<ModdedDamageTypeHolderComponent>().Add(blade1);
             dagger1ProjectileThrow.GetComponent<SphereCollider>().radius = MainPlugin.daggerspherebox.Value;
@@ -257,22 +338,22 @@ namespace Katarina
             ContentAddition.AddProjectile(dagger6ProjectileThrow);
 
             //setup for Genji dagger ghosts
-            var dagger1bleed = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger1fab"), "KatarinaThrown1Bleed", false);
+            var dagger1bleed = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger1fab"), "KatarinaThrown1Bleed", false);
             dagger1bleed.AddComponent<ProjectileGhostController>();
             
-            var dagger2bleed = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger2fab"), "KatarinaThrown2Bleed", false);
+            var dagger2bleed = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger2fab"), "KatarinaThrown2Bleed", false);
             dagger2bleed.AddComponent<ProjectileGhostController>();
             
-            var dagger3bleed = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger3fab"), "KatarinaThrown3Bleed", false);
+            var dagger3bleed = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger3fab"), "KatarinaThrown3Bleed", false);
             dagger3bleed.AddComponent<ProjectileGhostController>();
             
-            var dagger4bleed = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger4fab"), "KatarinaThrown4Bleed", false);
+            var dagger4bleed = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger4fab"), "KatarinaThrown4Bleed", false);
             dagger4bleed.AddComponent<ProjectileGhostController>();
             
-            var dagger5bleed = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger5fab"), "KatarinaThrown5Bleed", false);
+            var dagger5bleed = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger5fab"), "KatarinaThrown5Bleed", false);
             dagger5bleed.AddComponent<ProjectileGhostController>();
             
-            var dagger6bleed = PrefabAPI.InstantiateClone(Assets.MainAssetBundle.LoadAsset<GameObject>("dagger6fab"), "KatarinaThrown6Bleed", false);
+            var dagger6bleed = PrefabAPI.InstantiateClone(KatAssets.MainAssetBundle.LoadAsset<GameObject>("dagger6fab"), "KatarinaThrown6Bleed", false);
             dagger6bleed.AddComponent<ProjectileGhostController>();
             
             //register Genji daggers

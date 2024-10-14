@@ -91,7 +91,6 @@ namespace Katarina
         protected CharacterBody enemybody;
         private float radius = 8;
         private float coefficient;
-
         private GameObject silentCollapse = Prefabs.silentcollapseEffect; //Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/BleedOnHitVoid/FractureImpactEffect.prefab").WaitForCompletion();
         
         public override void OnEnter()
@@ -108,52 +107,59 @@ namespace Katarina
             {
                 TeleportHelper.TeleportBody(base.characterBody, blinkPosition);
             }
-            this.sphereSearch = new SphereSearch();
-            this.sphereSearch.origin = blinkPosition;
-            this.sphereSearch.radius = radius;
-            this.sphereSearch.mask = LayerIndex.entityPrecise.mask;
+            sphereSearch = new SphereSearch();
+            sphereSearch.origin = blinkPosition;
+            sphereSearch.radius = radius;
+            sphereSearch.mask = LayerIndex.entityPrecise.mask;
             
-            var hurtbox = sphereSearch.RefreshCandidates()
+            /*var hurtbox = sphereSearch.RefreshCandidates()
                 .FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(TeamIndex.Player)).OrderCandidatesByDistance()
-                .FilterCandidatesByDistinctHurtBoxEntities().GetHurtBoxes()[0];
-            if (hurtbox && hurtbox.healthComponent)
+                .FilterCandidatesByDistinctHurtBoxEntities().GetHurtBoxes()[0];*/
+
+            var hurtBoxes = sphereSearch.RefreshCandidates()
+                .RefreshCandidates()
+                .FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(teamComponent.teamIndex))
+                .OrderCandidatesByDistance()
+                .FilterCandidatesByDistinctHurtBoxEntities()
+                .GetHurtBoxes()
+                .ToArray();
+            
+            if (hurtBoxes.Length == 0) return;
+            bool isFlying = hurtBoxes[0].healthComponent.body.isFlying;
+            bool isVulture = hurtBoxes[0].healthComponent.body.bodyIndex == MainPlugin.vultureIndex;
+            bool isPest = hurtBoxes[0].healthComponent.body.bodyIndex == MainPlugin.pestIndex;
+
+            if (isFlying || isVulture || isPest)
             {
-                bool flag1 = hurtbox.healthComponent.body.isFlying;
-                bool flag2 = hurtbox.healthComponent.body.bodyIndex == MainPlugin.vultureIndex;
-                bool flag3 = hurtbox.healthComponent.body.bodyIndex == MainPlugin.pestIndex;
+                coefficient = MainPlugin.ihateflyingenemies.Value; //TODO Shunpo flying damage
+                FreezeVelocity();
+            }
 
-                if (flag1 || flag2 || flag3)
-                {
-                    coefficient = MainPlugin.ihateflyingenemies.Value; //TODO Shunpo flying damage
-                    FreezeVelocity();
-                }
+            else
+            {
+                coefficient = MainPlugin.blinkdmg.Value; //TODO Shunpo damage
+            }
 
-                else
+            if (NetworkServer.active)
+            {
+                DamageInfo damageInfo = new DamageInfo()
                 {
-                    coefficient = MainPlugin.blinkdmg.Value; //TODO Shunpo damage
-                }
+                    attacker = base.characterBody.gameObject,
+                    inflictor = base.characterBody.gameObject,
+                    damage = base.characterBody.damage * coefficient,
+                    procCoefficient = 1.3f,
+                    damageType = DamageType.Generic,
+                    damageColorIndex = DamageColorIndex.Default,
+                    position = hurtBoxes[0].transform.position,
+                    rejected = false,
+                };
+                damageInfo.AddModdedDamageType(Prefabs.blink);
+                hurtBoxes[0].healthComponent.TakeDamage(damageInfo);
+            }
 
-                if (NetworkServer.active)
-                {
-                    DamageInfo damageInfo = new DamageInfo()
-                    {
-                        attacker = base.characterBody.gameObject,
-                        inflictor = base.characterBody.gameObject,
-                        damage = base.characterBody.damage * coefficient,
-                        procCoefficient = 1.3f,
-                        damageType = DamageType.Generic,
-                        damageColorIndex = DamageColorIndex.Default,
-                        position = hurtbox.transform.position,
-                        rejected = false,
-                    };
-                    damageInfo.AddModdedDamageType(Prefabs.blink);
-                    hurtbox.healthComponent.TakeDamage(damageInfo);
-                }
-
-                if (MainPlugin.shunpodamagefx.Value)
-                {
-                    EffectManager.SimpleEffect(silentCollapse, hurtbox.healthComponent.body.corePosition, Quaternion.identity, false);
-                }
+            if (MainPlugin.shunpodamagefx.Value)
+            {
+                EffectManager.SimpleEffect(silentCollapse, hurtBoxes[0].healthComponent.body.corePosition, Quaternion.identity, false);
             }
         }
 
@@ -230,23 +236,11 @@ namespace Katarina
             if (katTracker)
             {
                 var target = katTracker.GetTrackingTarget();
-                
-                if (target)
-                { 
-                    enemybody = target.healthComponent.GetComponent<CharacterBody>();
-                    var inputbank = enemybody.inputBank;
-
-                    if (inputbank)
-                    {
-                        Ray enemylook = inputbank.GetAimRay();
-                        blinkPosition = enemylook.origin + enemylook.direction * 2f;
-                        DontBeZero();
-                    }
-                    else
-                    {
-                        blinkPosition = target ? target.transform.position : base.characterBody.corePosition;
-                    }
-                }
+                if (!target) return;
+                var inputbank = target.healthComponent.body.inputBank;
+                Ray enemylook = inputbank.GetAimRay();
+                blinkPosition = enemylook.origin + enemylook.direction * 2f;
+                DontBeZero();
             }
         }
 

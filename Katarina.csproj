@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -9,64 +9,28 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="katarinaassets" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="katarinaassets" />
     <None Remove="BattleQueenSounds.bnk" />
     <EmbeddedResource Include="BattleQueenSounds.bnk" />
+    <None Remove="katarinaassets" />
+    <EmbeddedResource Include="katarinaassets" />
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="HookGenPatcher-HookGenPatcher" Version="1.2.10" />
-    <PackageReference Include="KingEnderBrine-ExtraSkillSlots" Version="1.5.1" />
-    <PackageReference Include="R2API" Version="5.0.5" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Reference Include="mscorlib">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\mscorlib.dll</HintPath>
-    </Reference>
-    <Reference Include="System">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.ComponentModel.Composition.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Core">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Drawing">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.Drawing.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Compression">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.IO.Compression.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Compression.FileSystem">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.IO.Compression.FileSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.Net.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Numerics">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.Numerics.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.Runtime.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Transactions">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.Transactions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.Xml.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <HintPath>..\..\..\Seekers of the Storm\Risk of Rain 2_Data\Managed\System.Xml.Linq.dll</HintPath>
-    </Reference>
+    <PackageReference Include="BepInEx.Core" Version="5.4.19" />
+    <PackageReference Include="KingEnderBrine-ExtraSkillSlots" Version="1.6.0" />
+    <PackageReference Include="RiskOfRain2.GameLibs" Version="1.3.1.275-r.0" />
+    <PackageReference Include="RiskofThunder-HookGenPatcher" Version="1.2.5" />
+    <PackageReference Include="RiskofThunder-R2API_Colors" Version="1.0.1" />
+    <PackageReference Include="RiskofThunder-R2API_ContentManagement" Version="1.0.6" />
+    <PackageReference Include="RiskofThunder-R2API_Core" Version="5.1.2" />
+    <PackageReference Include="RiskofThunder-R2API_DamageType" Version="1.1.2" />
+    <PackageReference Include="RiskofThunder-R2API_Dot" Version="1.0.3" />
+    <PackageReference Include="RiskofThunder-R2API_Language" Version="1.0.1" />
+    <PackageReference Include="RiskofThunder-R2API_Loadout" Version="1.0.2" />
+    <PackageReference Include="RiskofThunder-R2API_Orb" Version="1.0.1" />
+    <PackageReference Include="RiskofThunder-R2API_Prefab" Version="1.0.4" />
+    <PackageReference Include="RiskofThunder-R2API_Sound" Version="1.0.3" />
+    <PackageReference Include="UnityEngine.Modules" Version="2021.3.33" />
   </ItemGroup>
   
 </Project>

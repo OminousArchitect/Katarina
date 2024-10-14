@@ -53,7 +53,7 @@ namespace Katarina
                     inflictor = owner,
                     damage = damage,
                     procCoefficient = procCoefficient,
-                    damageType = DamageType.Generic,
+                    damageType = DamageTypeExtended.Generic,
                     damageColorIndex = DamageColorIndex.Default,
                     position = this.target.transform.position,
                     rejected = false,

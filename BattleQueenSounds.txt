@@ -1,11 +1,55 @@
 Event	ID	Name			Wwise Object Path	Notes
+	236712321	Play_DaggersCharged			\Default Work Unit\Play_DaggersCharged	
+	591216089	Play_DaggerHitEnemy			\Default Work Unit\Play_DaggerHitEnemy	
+	730767624	Play_DaggerThrow			\Default Work Unit\Play_DaggerThrow	
+	911155720	Play_Lotus1			\Default Work Unit\Play_Lotus1	
+	1226218464	Play_MeleeVoice			\Default Work Unit\Play_MeleeVoice	
+	2431438415	Play_LotusVoice			\Default Work Unit\Play_LotusVoice	
+	2508626887	Play_DaggerLand			\Default Work Unit\Play_DaggerLand	
 	2674848417	Play_Shunpo			\Default Work Unit\Play_Shunpo	
+	2921051050	Play_DaggerEffort			\Default Work Unit\Play_DaggerEffort	
+	3085708960	Play_DeathQuote			\Default Work Unit\Play_DeathQuote	
+	3386040098	Play_DaggerSwing			\Default Work Unit\Play_DaggerSwing	
+	3507441748	Play_DaggerPickup			\Default Work Unit\Play_DaggerPickup	
 
 Game Parameter	ID	Name			Wwise Object Path	Notes
 	3673881719	Volume_SFX			\Default Work Unit\Volume_SFX	
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	836555959	Shunpo3	C:\Users\bosau\OneDrive\Documents\WwiseProjects\Battle Queen Sounds\.cache\Windows\SFX\Shunpo3_05842A19.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\Shunpo\Shunpo3		15048
-	851784670	Shunpo1	C:\Users\bosau\OneDrive\Documents\WwiseProjects\Battle Queen Sounds\.cache\Windows\SFX\Shunpo1_05842A19.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\Shunpo\Shunpo1		17917
-	1005614526	Shunpo2	C:\Users\bosau\OneDrive\Documents\WwiseProjects\Battle Queen Sounds\.cache\Windows\SFX\Shunpo2_05842A19.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\Shunpo\Shunpo2		15098
+	8652491	ThisMustNotBeTheEnd	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\ThisMustNotBeTheEnd_118B61A9.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DeathQuote\ThisMustNotBeTheEnd		73019
+	48456149	SchemaMustTriumph	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\SchemaMustTriumph_00DF8283.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DeathQuote\SchemaMustTriumph		70959
+	153879181	DaggerThrow2	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerThrow2_C9A3ACD9.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerThrow\DaggerThrow2		10691
+	164660380	DaggerLand1	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerLand1_9183238E.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerLand\DaggerLand1		10838
+	221420671	Effort4	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\Effort4_9917BC15.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerEffort\Effort4		6106
+	275485147	VoiceLine5	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\VoiceLine5_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\LotusVoice\VoiceLine5		36837
+	314611840	VoiceLine3	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\VoiceLine3_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\LotusVoice\VoiceLine3		41825
+	325029880	Effort1	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\Effort1_06511A3E.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerEffort\Effort1		6947
+	337620008	VoiceLine1	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\VoiceLine1_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\LotusVoice\VoiceLine1		44236
+	498855695	DaggerLand2	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerLand2_FB32E3BB.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerLand\DaggerLand2		13344
+	516451615	DaggerPickup1	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerPickup1_A395A128.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerPickup\DaggerPickup1		11999
+	521362248	DaggerSwing3	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerSwing3_5A3D11F2.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerSwing\DaggerSwing3		6936
+	527714566	MeleeVoice2	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\MeleeVoice2_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\MeleeVoice\MeleeVoice2		4955
+	528861639	Effort6	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\Effort6_A0DCC83B.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerEffort\Effort6		4918
+	640799397	DaggerHitEnemy2	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerHitEnemy2_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerHitEnemy\DaggerHitEnemy2		9616
+	662087278	MeleeVoice1	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\MeleeVoice1_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\MeleeVoice\MeleeVoice1		5858
+	669666688	MeleeVoice3	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\MeleeVoice3_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\MeleeVoice\MeleeVoice3		5361
+	671960407	DaggerPickup2	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerPickup2_73DE2FB4.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerPickup\DaggerPickup2		12745
+	678656644	W Sound	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\W Sound_9A206165.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\W Sound		12081
+	700094599	DaggerSwing1	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerSwing1_429FBB8E.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerSwing\DaggerSwing1		7886
+	700459539	DaggerPickup3	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerPickup3_19521D28.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerPickup\DaggerPickup3		17634
+	720644996	DaggerThrow1	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerThrow1_41A4AC76.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerThrow\DaggerThrow1		10196
+	743513237	MeleeVoice4	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\MeleeVoice4_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\MeleeVoice\MeleeVoice4		5496
+	769608239	MeleeVoice5	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\MeleeVoice5_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\MeleeVoice\MeleeVoice5		6371
+	789745169	DaggerSwing4	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerSwing4_8E78A73F.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerSwing\DaggerSwing4		6413
+	795813086	DaggerSwing2	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerSwing2_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerSwing\DaggerSwing2		6344
+	836555959	Shunpo3	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\Shunpo3_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\Shunpo\Shunpo3		15072
+	849298094	VoiceLine2	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\VoiceLine2_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\LotusVoice\VoiceLine2		42053
+	851784670	Shunpo1	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\Shunpo1_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\Shunpo\Shunpo1		17941
+	867486719	DaggerThrow3	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\DaggerThrow3_31664F71.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerThrow\DaggerThrow3		10881
+	884418908	VoiceLine4	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\VoiceLine4_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\LotusVoice\VoiceLine4		38000
+	945315964	Effort2	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\Effort2_3413A8AC.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerEffort\Effort2		5663
+	1005614526	Shunpo2	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\Shunpo2_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\Shunpo\Shunpo2		15122
+	1020891865	Effort8	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\Effort8_A065F860.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerEffort\Effort8		6665
+	1033706326	Lotus1	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\Lotus1_EDCD4836.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\Lotus1		64825
+	1051505226	Effort3	D:\Newer Drive\Documents\Battle Queen Sounds\.cache\Windows\SFX\Effort3_D083D2C1.wem		\Actor-Mixer Hierarchy\Default Work Unit\SFX_Mixer\DaggerEffort\Effort3		7847
 

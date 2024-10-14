@@ -27,7 +27,7 @@ namespace Katarina
     {
         internal static void Hooks() //they're really C# events
         {
-            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            //RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
             GlobalEventManager.onClientDamageNotified += GlobalEventManager_onClientDamageNotified;
@@ -311,11 +311,6 @@ namespace Katarina
                     }
                 }                
             }
-        }
-
-        internal static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-
         }
     }
 }

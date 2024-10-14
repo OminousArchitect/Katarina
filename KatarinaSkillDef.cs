@@ -30,12 +30,12 @@ namespace Katarina
         {
             return new KatarinaSkillDef.InstanceData
             {
-                spearmanTracker = skillSlot.GetComponent<KatarinaTracker>()
+                katarinaTracker = skillSlot.GetComponent<KatarinaTracker>()
             };
         }
         internal static bool IsExecutable([NotNull] GenericSkill skillSlot)
         {
-            KatarinaTracker tracker = ((KatarinaSkillDef.InstanceData)skillSlot.skillInstanceData).spearmanTracker;
+            KatarinaTracker tracker = ((KatarinaSkillDef.InstanceData)skillSlot.skillInstanceData).katarinaTracker;
             return tracker.canExecute;
         }
         public override bool CanExecute([NotNull] GenericSkill skillSlot)
@@ -48,7 +48,7 @@ namespace Katarina
         }
         class InstanceData : SkillDef.BaseSkillInstanceData
         {
-            public KatarinaTracker spearmanTracker;
+            public KatarinaTracker katarinaTracker;
         }
     }
 }

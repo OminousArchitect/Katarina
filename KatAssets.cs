@@ -22,7 +22,7 @@ using R2API.ContentManagement;
 
 namespace Katarina
 {
-    class Assets
+    class KatAssets
     {
         public static AssetBundle MainAssetBundle = null;
 

@@ -130,7 +130,7 @@ namespace Katarina
             
             //On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (self, user, t) => { };
             
-            Assets.PopulateAssets();
+            KatAssets.PopulateAssets();
             Prefabs.CreatePrefabs();
             CreateSurvPrefab();
             RegisterStates();
@@ -149,8 +149,6 @@ namespace Katarina
         {
             characterPrefab = PrefabAPI.InstantiateClone(LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/CommandoBody"), SURVIVORNAME + "Body", true);
             characterPrefab.AddComponent<BladeController>();
-            characterPrefab.AddComponent<KatarinaTracker>().maxTrackingDistance = 93f;
-            characterPrefab.GetComponent<KatarinaTracker>().maxTrackingAngle = 21f;
             //characterPrefab.AddComponent<KatarinaSkillSwitchBehaviour>();
             characterPrefab.AddComponent<ExtraSkillLocator>();
             characterPrefab.GetComponent<NetworkIdentity>().localPlayerAuthority = true;
@@ -158,8 +156,11 @@ namespace Katarina
             Destroy(characterPrefab.transform.Find("CameraPivot").gameObject);
             Destroy(characterPrefab.transform.Find("AimOrigin").gameObject);
             //AncientScepter.AncientScepterItem.instance.RegisterScepterSkill(replacementDef, SURVIVORNAME + "Body", slotIndex, variantIndex);
+            GameObject model = KatAssets.MainAssetBundle.LoadAsset<GameObject>("katarina");
 
-            GameObject model = Assets.MainAssetBundle.LoadAsset<GameObject>("katarina");
+            var tracker = characterPrefab.AddComponent<KatarinaTracker>();
+            tracker.maxTrackingAngle = 93f;
+            tracker.maxTrackingDistance = 21f;
 
             GameObject ModelBase = new GameObject("ModelBase");
             ModelBase.transform.parent = characterPrefab.transform;
@@ -222,7 +223,7 @@ namespace Katarina
             bodyComponent.hideCrosshair = false;
             bodyComponent.aimOriginTransform = gameObject3.transform;
             bodyComponent.hullClassification = HullClassification.Human;
-            bodyComponent.portraitIcon = Assets.MainAssetBundle.LoadAsset<Texture>("KatIcon");
+            bodyComponent.portraitIcon = KatAssets.MainAssetBundle.LoadAsset<Texture>("KatIcon");
             bodyComponent.isChampion = false;
             bodyComponent.currentVehicle = null;
             bodyComponent.skinIndex = 0U;
@@ -290,7 +291,7 @@ namespace Katarina
             characterModel.baseRendererInfos = rendererInfoList.ToArray();
             characterModel.autoPopulateLightInfos = true;
             characterModel.invisibilityCount = 0;
-            characterModel.temporaryOverlays = new List<TemporaryOverlay>();
+            characterModel.temporaryOverlays = new List<TemporaryOverlayInstance>();
             Reflection.SetFieldValue<SkinnedMeshRenderer>(characterModel, "mainSkinnedMeshRenderer", renderers[0]);//renderer1);
             SkinnedMeshRenderer fieldValue = Reflection.GetFieldValue<SkinnedMeshRenderer>(characterModel, "mainSkinnedMeshRenderer");
 
@@ -357,11 +358,11 @@ namespace Katarina
             capsuleCollider.material = null;
 
             KinematicCharacterMotor kinematicCharacterMotor = characterPrefab.GetComponent<KinematicCharacterMotor>();
-            kinematicCharacterMotor.CharacterController = characterMotor;
+            /*kinematicCharacterMotor.CharacterController = characterMotor;
             kinematicCharacterMotor.Capsule = capsuleCollider;
-            kinematicCharacterMotor.Rigidbody = rigidbody;
+            kinematicCharacterMotor.AttachedRigidbodyOverride = rigidbody;
 
-            kinematicCharacterMotor.DetectDiscreteCollisions = false;
+            kinematicCharacterMotor.DiscreteCollisionEvents = false;
             kinematicCharacterMotor.GroundDetectionExtraDistance = 0f;
             kinematicCharacterMotor.MaxStepHeight = 0.2f;
             kinematicCharacterMotor.MinRequiredStepDepth = 0.1f;
@@ -374,9 +375,8 @@ namespace Katarina
             kinematicCharacterMotor.HasPlanarConstraint = false;
             kinematicCharacterMotor.PlanarConstraintAxis = Vector3.up;
             kinematicCharacterMotor.StepHandling = StepHandlingMethod.None;
-            kinematicCharacterMotor.LedgeHandling = true;
             kinematicCharacterMotor.InteractiveRigidbodyHandling = true;
-            kinematicCharacterMotor.SafeMovement = false;
+            kinematicCharacterMotor.SafeMovement = false;*/
 
             HurtBoxGroup hurtBoxGroup = model.AddComponent<HurtBoxGroup>();
 
@@ -542,7 +542,7 @@ namespace Katarina
             component.passiveSkill.enabled = true;
             component.passiveSkill.skillNameToken = SURVIVORNAMEKEY + "_PASSIVE_NAME";
             component.passiveSkill.skillDescriptionToken = SURVIVORNAMEKEY + "_PASSIVE_DESCRIPTION";
-            component.passiveSkill.icon = Assets.MainAssetBundle.LoadAsset<Sprite>("Passive1");
+            component.passiveSkill.icon = KatAssets.MainAssetBundle.LoadAsset<Sprite>("Passive1");
         }
         void PrimarySetup()
         {
@@ -565,7 +565,7 @@ namespace Katarina
             SkillDef.rechargeStock = 0;
             SkillDef.requiredStock = 0;
             SkillDef.stockToConsume = 0;
-            SkillDef.icon = Assets.MainAssetBundle.LoadAsset<Sprite>("primary");
+            SkillDef.icon = KatAssets.MainAssetBundle.LoadAsset<Sprite>("primary");
             SkillDef.skillDescriptionToken = SURVIVORNAMEKEY + "_M1_DESCRIPTION";
             SkillDef.skillName = SURVIVORNAMEKEY + "_M1";
             SkillDef.skillNameToken = SURVIVORNAMEKEY + "_M1";
@@ -634,7 +634,7 @@ namespace Katarina
             Alt1SkillDef.dontAllowPastMaxStocks = true;
             Alt1SkillDef.requiredStock = 1;
             Alt1SkillDef.stockToConsume = 1;
-            Alt1SkillDef.icon = Assets.MainAssetBundle.LoadAsset<Sprite>("secondary");
+            Alt1SkillDef.icon = KatAssets.MainAssetBundle.LoadAsset<Sprite>("secondary");
             Alt1SkillDef.skillDescriptionToken = SURVIVORNAMEKEY + "_M2_DESCRIPTION";
             Alt1SkillDef.skillName = SURVIVORNAMEKEY + "_M2";
             Alt1SkillDef.skillNameToken = SURVIVORNAMEKEY + "_M2";
@@ -684,7 +684,7 @@ namespace Katarina
             SkillDef.rechargeStock = 1;
             SkillDef.requiredStock = 1;
             SkillDef.stockToConsume = 1;
-            SkillDef.icon = Assets.MainAssetBundle.LoadAsset<Sprite>("Preparation");
+            SkillDef.icon = KatAssets.MainAssetBundle.LoadAsset<Sprite>("Preparation");
             SkillDef.skillDescriptionToken = SURVIVORNAMEKEY + "_ALT2_SECONDARY_DESCRIPTION";
             SkillDef.skillName = SURVIVORNAMEKEY + "_ALT2_SECONDARY";
             SkillDef.skillNameToken = SURVIVORNAMEKEY + "_ALT2_SECONDARY";
@@ -725,7 +725,7 @@ namespace Katarina
             SkillDef.rechargeStock = 1;
             SkillDef.requiredStock = 1;
             SkillDef.stockToConsume = 1;
-            SkillDef.icon = Assets.MainAssetBundle.LoadAsset<Sprite>("utility");
+            SkillDef.icon = KatAssets.MainAssetBundle.LoadAsset<Sprite>("utility");
             SkillDef.skillDescriptionToken = SURVIVORNAMEKEY + "_UTIL_DESCRIPTION";
             SkillDef.skillName = SURVIVORNAMEKEY + "_UTIL";
             SkillDef.skillNameToken = SURVIVORNAMEKEY + "_UTIL";
@@ -768,7 +768,7 @@ namespace Katarina
             SkillDef.requiredStock = 1;
             SkillDef.stockToConsume = 1;
             SkillDef.forceSprintDuringState = true;
-            SkillDef.icon = Assets.MainAssetBundle.LoadAsset<Sprite>("utility2");
+            SkillDef.icon = KatAssets.MainAssetBundle.LoadAsset<Sprite>("utility2");
             SkillDef.skillDescriptionToken = SURVIVORNAMEKEY + "ALT_UTIL_DESCRIPTION";
             SkillDef.skillName = SURVIVORNAMEKEY + "ALT_UTIL";
             SkillDef.skillNameToken = SURVIVORNAMEKEY + "ALT_UTIL";
@@ -813,7 +813,7 @@ namespace Katarina
             SkillDef.rechargeStock = 1;
             SkillDef.requiredStock = 1;
             SkillDef.stockToConsume = 1;
-            SkillDef.icon = Assets.MainAssetBundle.LoadAsset<Sprite>("utility");
+            SkillDef.icon = KatAssets.MainAssetBundle.LoadAsset<Sprite>("utility");
             SkillDef.skillDescriptionToken = SURVIVORNAMEKEY + "_UTIL_DESCRIPTION";
             SkillDef.skillName = SURVIVORNAMEKEY + "_UTIL";
             SkillDef.skillNameToken = SURVIVORNAMEKEY + "_UTIL";
@@ -856,7 +856,7 @@ namespace Katarina
             SkillDef.rechargeStock = 1;
             SkillDef.requiredStock = 1;
             SkillDef.stockToConsume = 1;
-            SkillDef.icon = Assets.MainAssetBundle.LoadAsset<Sprite>("special");
+            SkillDef.icon = KatAssets.MainAssetBundle.LoadAsset<Sprite>("special");
             SkillDef.skillDescriptionToken = SURVIVORNAMEKEY + "_SPEC_DESCRIPTION";
             SkillDef.skillName = SURVIVORNAMEKEY + "_SPEC";
             SkillDef.skillNameToken = SURVIVORNAMEKEY + "_SPEC";
